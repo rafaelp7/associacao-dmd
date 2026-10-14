@@ -1,114 +1,301 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Associação DMD</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Associação Duchenne Brasil - Mais que um símbolo, um propósito</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fontes do Google para combinar com a identidade visual das artes -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cor-amarelo: #F3BA19;
+      --cor-vermelho: #BD2831;
+      --cor-verde: #10653A;
+      --cor-fundo: #F6F6EA;
+      --cor-texto: #1E3A2B;
+    }
 
-    <!-- COLE O ESTILO AQUI DENTRO DO <style> -->
-    <style>
-      :root {
-        --cor-amarelo: #F3BA19;
-        --cor-vermelho: #BD2831;
-        --cor-verde: #10653A;
-        --cor-fundo: #F6F6EA;
-        --cor-texto: #2C3E35;
-      }
+    body {
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
 
-      body {
-        background-color: var(--cor-fundo);
-        color: var(--cor-texto);
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-
-      .btn-destaque {
-        background-color: var(--cor-verde);
-        color: #ffffff;
-        padding: 10px 20px;
-        border-radius: 6px;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      .btn-destaque:hover {
-        background-color: #0b4929;
-      }
-    </style>
+    .fonte-manuscrita {
+      font-family: 'Caveat', cursive;
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="min-h-screen flex flex-col selection:bg-[#10653A] selection:text-white">
 
-  <!-- Cabeçalho -->
-  <header class="bg-blue-700 text-white py-6 px-4 shadow-md">
-    <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>
-        <h1 class="text-2xl font-bold">Associação DMD</h1>
-        <p class="text-blue-100 text-sm">Apoio, Conscientização e Cuidado</p>
-      </div>
-      <a href="#contato" class="bg-white text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-50 transition text-sm">
-        Fale Conosco
+  <!-- Barra Superior Decorativa com as 3 cores da marca -->
+  <div class="h-2 w-full bg-gradient-to-r from-[#10653A] via-[#F3BA19] to-[#BD2831]"></div>
+
+  <!-- Cabeçalho / Menu -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-[#10653A]/10 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="#" class="flex items-center gap-3">
+        <img src="LOGO.png" alt="Logo Duchenne Brasil" class="h-16 w-auto object-contain">
       </a>
+      
+      <nav class="flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-[#10653A]">
+        <a href="#sobre" class="hover:text-[#BD2831] transition">A Associação</a>
+        <a href="#identidade" class="hover:text-[#BD2831] transition">Nosso Símbolo</a>
+        <a href="#pilares" class="hover:text-[#BD2831] transition">Atuação</a>
+        <a href="#contato" class="bg-[#10653A] hover:bg-[#0b4929] text-white px-5 py-2.5 rounded-full transition shadow-sm">
+          Fale Conosco
+        </a>
+      </nav>
     </div>
   </header>
 
-  <!-- Conteúdo Principal -->
-  <main class="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
-    
-    <!-- Seção Sobre -->
-    <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-      <h2 class="text-xl font-bold text-blue-900 mb-3">O que é a Distrofia Muscular de Duchenne?</h2>
-      <p class="text-slate-600 leading-relaxed">
-        A Distrofia Muscular de Duchenne (DMD) é uma condição genética caracterizada pela perda progressiva de força muscular. Nossa associação nasce para acolher famílias, orientar cuidadores, divulgar informações científicas atualizadas e defender direitos fundamentais.
-      </p>
-    </section>
-
-    <!-- Pilares de Atuação -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-blue-800 mb-2">Acolhimento</h3>
-        <p class="text-sm text-slate-600">Suporte emocional e troca de experiências entre famílias e cuidadores.</p>
-      </div>
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-blue-800 mb-2">Informação</h3>
-        <p class="text-sm text-slate-600">Acesso a laudos, avanços científicos, fisioterapia e cuidados respiratórios.</p>
-      </div>
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-blue-800 mb-2">Direitos</h3>
-        <p class="text-sm text-slate-600">Orientações jurídicas sobre acesso a tratamentos, medicamentos e benefícios.</p>
-      </div>
-    </section>
-
-    <!-- Formulário de Contato / Pré-cadastro -->
-    <section id="contato" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-      <h2 class="text-xl font-bold text-blue-900 mb-2">Pré-Cadastro / Fale Conosco</h2>
-      <p class="text-sm text-slate-600 mb-4">Deixe seus dados para entrar em contato com nossa equipe.</p>
+  <!-- Seção Principal (Hero) -->
+  <section class="relative overflow-hidden py-12 md:py-20 px-4">
+    <!-- Detalhe decorativo inspirado nas curvas das artes -->
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
       
-      <form class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Seu Nome</label>
-          <input type="text" placeholder="Nome completo" class="w-full border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500">
+      <div class="space-y-6 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 bg-[#F3BA19]/20 text-[#10653A] px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase">
+          <span class="w-2 h-2 rounded-full bg-[#BD2831]"></span>
+          Acolher • Conectar • Informar • Transformar
         </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">E-mail ou WhatsApp</label>
-          <input type="text" placeholder="(DDD) ou seu e-mail" class="w-full border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500">
+
+        <h1 class="text-4xl md:text-5xl font-bold text-[#10653A] leading-tight">
+          Mais que um símbolo, <br>
+          <span class="fonte-manuscrita text-6xl md:text-7xl text-[#10653A] relative inline-block mt-1">
+            um propósito.
+            <span class="block h-1.5 w-full bg-[#F3BA19] rounded-full -mt-2"></span>
+          </span>
+        </h1>
+
+        <p class="text-lg text-[#2C3E35]/90 leading-relaxed max-w-xl mx-auto md:mx-0">
+          Somos um espaço que reúne famílias, pessoas com Distrofia Muscular de Duchenne, médicos, pesquisadores, profissionais de saúde e toda a sociedade em busca de mais qualidade de vida e futuro.
+        </p>
+
+        <div class="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+          <a href="#contato" class="bg-[#BD2831] hover:bg-[#9e1f27] text-white font-bold px-7 py-3.5 rounded-xl transition shadow-md">
+            Faça Parte / Pré-Cadastro
+          </a>
+          <a href="#identidade" class="bg-white hover:bg-stone-50 text-[#10653A] border-2 border-[#10653A] font-bold px-7 py-3.5 rounded-xl transition">
+            Conheça Nossa História
+          </a>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Mensagem</label>
-          <textarea rows="3" placeholder="Como podemos ajudar?" class="w-full border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+      </div>
+
+      <!-- Imagem Principal "Mais que um propósito" -->
+      <div class="flex justify-center">
+        <div class="relative bg-white p-3 rounded-3xl shadow-xl border-2 border-[#F3BA19]/40 max-w-md w-full">
+          <img 
+            src="mais que proposito.png" 
+            onerror="if(!this.dataset.t1){this.dataset.t1=1;this.src='mais que proposito.jpg';}else if(!this.dataset.t2){this.dataset.t2=1;this.src='MAIS QUE PROPOSITO.png';}else{this.src='LOGO.png';}"
+            alt="Mais que um símbolo, um propósito - Duchenne Brasil" 
+            class="w-full h-auto rounded-2xl object-cover"
+          >
         </div>
-        <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition shadow-sm">
-          Enviar Mensagem
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Seção Sobre a DMD e a Associação -->
+  <section id="sobre" class="py-12 px-4">
+    <div class="max-w-5xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-[#10653A]/10">
+      <div class="max-w-3xl mx-auto text-center space-y-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-[#10653A]">O que é a Distrofia Muscular de Duchenne?</h2>
+        <div class="h-1 w-20 bg-[#F3BA19] mx-auto rounded-full"></div>
+        <p class="text-[#2C3E35]/90 leading-relaxed text-base md:text-lg pt-2">
+          A Distrofia Muscular de Duchenne (DMD) é uma condição genética caracterizada pela perda progressiva de força muscular. A <strong>Associação Duchenne Brasil</strong> nasce como uma comunidade conectada, contínua e em crescimento, oferecendo proteção, segurança, informação científica e representatividade para todas as famílias.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Galeria e Significado das Cores e Símbolos -->
+  <section id="identidade" class="py-14 px-4">
+    <div class="max-w-6xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#BD2831]">Nossa Identidade</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[#10653A]">O Significado do Nosso Símbolo</h2>
+        <p class="text-[#2C3E35]/80 max-w-2xl mx-auto">
+          Cada traço e cada cor da Duchenne Brasil carrega os valores que guiam a nossa jornada diária.
+        </p>
+      </div>
+
+      <!-- Grade com os 4 cartões das imagens enviadas ao GitHub -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Card 1: O Sol -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#F3BA19] flex flex-col hover:-translate-y-1 transition duration-300">
+          <img src="O SOL.png" onerror="this.src='O SOL.jpg'" alt="O Sol - Esperança e Futuro" class="w-full h-auto object-cover">
+          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+            <div>
+              <h3 class="font-bold text-lg text-[#10653A]">O Sol</h3>
+              <p class="text-xs font-semibold text-[#F3BA19] uppercase tracking-wider mb-2">Esperança e Futuro</p>
+              <p class="text-sm text-[#2C3E35]/80">Luz que guia, aquece e inspira, simbolizando a busca por mais qualidade de vida.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: O Círculo -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#10653A] flex flex-col hover:-translate-y-1 transition duration-300">
+          <img src="O CIRCULO.png" onerror="this.src='O CIRCULO.jpg'" alt="O Círculo - União e Proteção" class="w-full h-auto object-cover">
+          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+            <div>
+              <h3 class="font-bold text-lg text-[#10653A]">O Círculo</h3>
+              <p class="text-xs font-semibold text-[#10653A] uppercase tracking-wider mb-2">União e Proteção</p>
+              <p class="text-sm text-[#2C3E35]/80">Acolhimento, união e pertencimento em uma comunidade conectada que une famílias e especialistas.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: O Vermelho -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#BD2831] flex flex-col hover:-translate-y-1 transition duration-300">
+          <img src="O VERMELHO.png" onerror="this.src='O VERMELHO.jpg'" alt="O Vermelho - Força e Protagonismo" class="w-full h-auto object-cover">
+          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+            <div>
+              <h3 class="font-bold text-lg text-[#BD2831]">O Vermelho</h3>
+              <p class="text-xs font-semibold text-[#BD2831] uppercase tracking-wider mb-2">Força e Protagonismo</p>
+              <p class="text-sm text-[#2C3E35]/80">A cor internacional Duchenne. Representa movimento, coragem e a determinação de quem não desiste.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: A Cor Verde -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#10653A] flex flex-col hover:-translate-y-1 transition duration-300">
+          <img src="A COR VERDE.png" onerror="this.src='A COR VERDE.jpg'" alt="A Cor Verde - Vida e Esperança" class="w-full h-auto object-cover">
+          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+            <div>
+              <h3 class="font-bold text-lg text-[#10653A]">A Cor Verde</h3>
+              <p class="text-xs font-semibold text-[#10653A] uppercase tracking-wider mb-2">Vida e Esperança</p>
+              <p class="text-sm text-[#2C3E35]/80">Representa saúde, equilíbrio, bem-estar e a força da união para construir o amanhã.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Frase Lema em Destaque -->
+      <div class="text-center pt-6">
+        <p class="fonte-manuscrita text-4xl md:text-5xl text-[#10653A] inline-block relative">
+          “Juntos somos mais fortes.”
+          <span class="block h-1 w-3/4 mx-auto bg-[#BD2831] rounded-full mt-1"></span>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pilares de Atuação -->
+  <section id="pilares" class="py-12 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div class="bg-white p-7 rounded-2xl shadow-sm border-l-4 border-[#10653A]">
+        <div class="w-10 h-10 rounded-xl bg-[#10653A]/10 text-[#10653A] flex items-center justify-center font-bold text-lg mb-4">1</div>
+        <h3 class="text-xl font-bold text-[#10653A] mb-2">Acolhimento & União</h3>
+        <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+          Suporte emocional, escuta ativa e troca de experiências entre famílias, cuidadores e pessoas com Duchenne em todo o Brasil.
+        </p>
+      </div>
+
+      <div class="bg-white p-7 rounded-2xl shadow-sm border-l-4 border-[#F3BA19]">
+        <div class="w-10 h-10 rounded-xl bg-[#F3BA19]/20 text-[#10653A] flex items-center justify-center font-bold text-lg mb-4">2</div>
+        <h3 class="text-xl font-bold text-[#10653A] mb-2">Informação & Ciência</h3>
+        <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+          Divulgação acessível sobre diagnóstico, diretrizes de cuidados multidisciplinares, fisioterapia, suporte respiratório e avanços clínicos.
+        </p>
+      </div>
+
+      <div class="bg-white p-7 rounded-2xl shadow-sm border-l-4 border-[#BD2831]">
+        <div class="w-10 h-10 rounded-xl bg-[#BD2831]/10 text-[#BD2831] flex items-center justify-center font-bold text-lg mb-4">3</div>
+        <h3 class="text-xl font-bold text-[#BD2831] mb-2">Direitos & Protagonismo</h3>
+        <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+          Orientação e articulação para acesso a tratamentos, medicamentos, políticas públicas e garantia dos direitos fundamentais.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Formulário de Contato / Pré-Cadastro -->
+  <section id="contato" class="py-14 px-4">
+    <div class="max-w-3xl mx-auto bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-[#10653A]/15">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#10653A] bg-[#10653A]/10 px-3 py-1 rounded-full">Comunidade Duchenne Brasil</span>
+        <h2 class="text-2xl md:text-3xl font-bold text-[#10653A] mt-3">Pré-Cadastro e Contato</h2>
+        <p class="text-sm text-[#2C3E35]/80 mt-1">
+          Famílias, profissionais de saúde ou apoiadores: preencha seus dados para caminharmos juntos.
+        </p>
+      </div>
+
+      <form class="space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-[#10653A] mb-1">Nome Completo</label>
+            <input type="text" placeholder="Digite seu nome" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#10653A] mb-1">E-mail ou WhatsApp</label>
+            <input type="text" placeholder="(DDD) 99999-9999 ou e-mail" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-[#10653A] mb-1">Cidade / Estado</label>
+            <input type="text" placeholder="Ex: Maringá - PR" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#10653A] mb-1">Seu Perfil</label>
+            <select class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+              <option>Familiar / Cuidador</option>
+              <option>Pessoa com Duchenne</option>
+              <option>Profissional de Saúde / Pesquisador</option>
+              <option>Apoiador / Voluntário</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-[#10653A] mb-1">Mensagem</label>
+          <textarea rows="3" placeholder="Conte um pouco sobre como podemos acolher ou ajudar você..." class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40"></textarea>
+        </div>
+
+        <button type="button" onclick="alert('Obrigado pelo contato! Em breve conectaremos este formulário ao banco de dados da Associação Duchenne Brasil.')" class="w-full bg-[#10653A] hover:bg-[#0b4929] text-white font-bold py-3.5 rounded-xl transition shadow-md text-base">
+          Enviar Cadastro
         </button>
       </form>
-    </section>
-
-  </main>
+    </div>
+  </section>
 
   <!-- Rodapé -->
-  <footer class="text-center py-6 text-sm text-slate-500">
-    &copy; Associação DMD - Todos os direitos reservados.
+  <footer class="bg-[#10653A] text-white mt-auto py-10 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-4">
+        <div class="bg-white p-2 rounded-xl">
+          <img src="LOGO.png" alt="Duchenne Brasil" class="h-12 w-auto object-contain">
+        </div>
+        <div>
+          <p class="font-bold text-lg">Associação Duchenne Brasil</p>
+          <p class="text-xs text-white/80">Acolher • Conectar • Informar • Transformar</p>
+        </div>
+      </div>
+
+      <!-- Link do Instagram conforme consta na imagem -->
+      <div class="flex items-center gap-3">
+        <a href="https://instagram.com/duchennebrasil" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-medium transition">
+          <svg class="w-5 h-5 text-[#F3BA19]" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          @DUCHENNEBRASIL
+        </a>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto border-t border-white/15 mt-6 pt-6 text-center text-xs text-white/70">
+      &copy; 2026 Associação Duchenne Brasil - Todos os direitos reservados. “Juntos somos mais fortes.”
+    </div>
   </footer>
 
 </body>
