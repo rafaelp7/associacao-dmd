@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Associação DMD</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associação DMD</title>
+
+    <!-- COLE O ESTILO AQUI DENTRO DO <style> -->
+    <style>
+      :root {
+        --cor-amarelo: #F3BA19;
+        --cor-vermelho: #BD2831;
+        --cor-verde: #10653A;
+        --cor-fundo: #F6F6EA;
+        --cor-texto: #2C3E35;
+      }
+
+      body {
+        background-color: var(--cor-fundo);
+        color: var(--cor-texto);
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .btn-destaque {
+        background-color: var(--cor-verde);
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .btn-destaque:hover {
+        background-color: #0b4929;
+      }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
