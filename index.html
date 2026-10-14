@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Associação DMD</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Cabeçalho -->
+  <header class="bg-blue-700 text-white py-6 px-4 shadow-md">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold">Associação DMD</h1>
+        <p class="text-blue-100 text-sm">Apoio, Conscientização e Cuidado</p>
+      </div>
+      <a href="#contato" class="bg-white text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-50 transition text-sm">
+        Fale Conosco
+      </a>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
+    
+    <!-- Seção Sobre -->
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+      <h2 class="text-xl font-bold text-blue-900 mb-3">O que é a Distrofia Muscular de Duchenne?</h2>
+      <p class="text-slate-600 leading-relaxed">
+        A Distrofia Muscular de Duchenne (DMD) é uma condição genética caracterizada pela perda progressiva de força muscular. Nossa associação nasce para acolher famílias, orientar cuidadores, divulgar informações científicas atualizadas e defender direitos fundamentais.
+      </p>
+    </section>
+
+    <!-- Pilares de Atuação -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h3 class="font-bold text-blue-800 mb-2">Acolhimento</h3>
+        <p class="text-sm text-slate-600">Suporte emocional e troca de experiências entre famílias e cuidadores.</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h3 class="font-bold text-blue-800 mb-2">Informação</h3>
+        <p class="text-sm text-slate-600">Acesso a laudos, avanços científicos, fisioterapia e cuidados respiratórios.</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <h3 class="font-bold text-blue-800 mb-2">Direitos</h3>
+        <p class="text-sm text-slate-600">Orientações jurídicas sobre acesso a tratamentos, medicamentos e benefícios.</p>
+      </div>
+    </section>
+
+    <!-- Formulário de Contato / Pré-cadastro -->
+    <section id="contato" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+      <h2 class="text-xl font-bold text-blue-900 mb-2">Pré-Cadastro / Fale Conosco</h2>
+      <p class="text-sm text-slate-600 mb-4">Deixe seus dados para entrar em contato com nossa equipe.</p>
+      
+      <form class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Seu Nome</label>
+          <input type="text" placeholder="Nome completo" class="w-full border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">E-mail ou WhatsApp</label>
+          <input type="text" placeholder="(DDD) ou seu e-mail" class="w-full border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Mensagem</label>
+          <textarea rows="3" placeholder="Como podemos ajudar?" class="w-full border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition shadow-sm">
+          Enviar Mensagem
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="text-center py-6 text-sm text-slate-500">
+    &copy; Associação DMD - Todos os direitos reservados.
+  </footer>
+
+</body>
+</html>
