@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Salto de Éxon e Terapias - Associação Duchenne Brasil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cor-amarelo: #F3BA19;
+      --cor-vermelho: #BD2831;
+      --cor-verde: #10653A;
+      --cor-fundo: #F6F6EA;
+      --cor-texto: #1E3A2B;
+    }
+    body {
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .fonte-manuscrita {
+      font-family: 'Caveat', cursive;
+    }
+    /* Desenho visual das peças de encaixe dos éxons */
+    .exon-box {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.78rem;
+      height: 36px;
+      min-width: 48px;
+      padding: 0 10px;
+      user-select: none;
+      transition: all 0.2s;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Barra Superior Decorativa -->
+  <div class="h-2 w-full bg-gradient-to-r from-[#10653A] via-[#F3BA19] to-[#BD2831]"></div>
+
+  <!-- Cabeçalho -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-[#10653A]/10 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="LOGO.png" alt="Logo Duchenne Brasil" class="h-14 w-auto object-contain">
+      </a>
+      <nav class="flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-[#10653A]">
+        <a href="index.html" class="hover:text-[#BD2831] transition">← Voltar para a Página Inicial</a>
+        <a href="#simulador" class="bg-[#BD2831] text-white px-4 py-2 rounded-full shadow-sm">Simulador de Éxons</a>
+        <a href="#catalogo" class="hover:text-[#BD2831] transition">Catálogo Completo de Terapias</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-10 flex-1">
+
+    <!-- Título e Introdução -->
+    <section class="text-center space-y-3">
+      <span class="bg-[#F3BA19]/25 text-[#10653A] px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
+        Ferramenta Educativa • Genética & Terapias DMD
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold text-[#10653A]">
+        Análise de Mutações e <span class="text-[#BD2831]">Salto de Éxon (Exon Skipping)</span>
+      </h1>
+      <p class="text-sm md:text-base text-[#2C3E35]/85 max-w-3xl mx-auto leading-relaxed">
+        Informe o tipo de alteração genética do laudo e os éxons envolvidos para verificar o encaixe da janela de leitura do gene <strong>DMD</strong> (79 éxons) e consultar os medicamentos aprovados ou em pesquisa clínica.
+      </p>
+    </section>
+
+    <!-- Painel do Simulador -->
+    <section id="simulador" class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-[#10653A]/15 space-y-6">
+      <h2 class="text-xl font-bold text-[#10653A] border-b pb-3">1. Informe os Dados da Mutação (Laudo Genético)</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Tipo de Mutação -->
+        <div>
+          <label class="block text-sm font-bold text-[#10653A] mb-2">Tipo de Alteração Genética</label>
+          <select id="tipoMutacao" onchange="ajustarCampos()" class="w-full border-2 border-stone-200 rounded-xl p-3 font-medium text-sm outline-none focus:border-[#10653A] bg-[#F6F6EA]/50">
+            <option value="delecao">Deleção de Éxon(s) (Mais comum ~65%)</option>
+            <option value="duplicacao">Duplicação de Éxon(s) (~10%)</option>
+            <option value="nonsense">Mutação de Ponto: Nonsense (Códon de Parada Prematuro)</option>
+            <option value="ponto">Mutação de Ponto: Missense / Pequena Indel / Splicing</option>
+          </select>
+        </div>
+
+        <!-- Éxon Inicial -->
+        <div>
+          <label id="labelExonInicio" class="block text-sm font-bold text-[#10653A] mb-2">Do Éxon (Inicial)</label>
+          <input type="number" id="exonInicio" min="1" max="79" value="48" class="w-full border-2 border-stone-200 rounded-xl p-3 font-bold text-base outline-none focus:border-[#10653A] bg-[#F6F6EA]/50" placeholder="Ex: 45">
+          <span class="text-xs text-stone-500">Valor entre 1 e 79</span>
+        </div>
+
+        <!-- Éxon Final -->
+        <div id="divExonFim">
+          <label class="block text-sm font-bold text-[#10653A] mb-2">Até o Éxon (Final)</label>
+          <input type="number" id="exonFim" min="1" max="79" value="50" class="w-full border-2 border-stone-200 rounded-xl p-3 font-bold text-base outline-none focus:border-[#10653A] bg-[#F6F6EA]/50" placeholder="Ex: 50 (ou igual ao inicial se for 1 só)">
+          <span class="text-xs text-stone-500">Se for apenas 1 éxon afetado, repita o mesmo número.</span>
+        </div>
+      </div>
+
+      <!-- Botões de Exemplo Rápido e Ação -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="font-bold text-stone-500">Exemplos rápidos:</span>
+          <button type="button" onclick="preencherExemplo('delecao', 48, 50)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 48–50 (Salta 51)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 45, 52)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 45–52 (Salta 53)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 46, 47)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 46–47 (Salta 45)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 45, 45)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 45 (Salta 44 ou 46)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 51, 51)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 51 (Salta 50 ou 52)</button>
+        </div>
+
+        <button type="button" onclick="analisarMutacao()" class="w-full md:w-auto bg-[#10653A] hover:bg-[#0b4929] text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md text-base">
+          Analisar Encaixe e Medicamentos
+        </button>
+      </div>
+    </section>
+
+    <!-- Área de Resultado Dinâmico -->
+    <div id="areaResultado" class="hidden space-y-8"></div>
+
+    <!-- Mapa Visual de Referência dos 79 Éxons -->
+    <section class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15 space-y-5">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-[#10653A]">Mapa de Encaixe dos 79 Éxons do Gene DMD</h2>
+          <p class="text-xs md:text-sm text-stone-600">
+            Dois éxons vizinhos se encaixam mantendo a janela de leitura quando suas bordas têm o mesmo formato: 
+            <strong>Reta com Reta (| com |)</strong>, <strong>Ponta Direita com Encaixe Direito (&gt; com &gt;)</strong> ou <strong>Ponta Esquerda com Encaixe Esquerdo (&lt; com &lt;)</strong>.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3 text-xs font-semibold">
+          <span class="inline-flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-[#3B71B8] inline-block"></span> Éxon Normal</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-[#BD2831] inline-block"></span> Éxon Afetado</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-[#F3BA19] inline-block"></span> Candidato a Salto</span>
+        </div>
+      </div>
+
+      <!-- Grade Interativa gerada via JS fiel à imagem e imagem original abaixo -->
+      <div id="gradeExons" class="bg-zinc-950 p-4 md:p-6 rounded-2xl flex flex-wrap gap-2 justify-center"></div>
+
+      <details class="text-sm text-[#10653A] font-semibold cursor-pointer pt-2">
+        <summary>Ver imagem original de referência dos éxons (clique para expandir)</summary>
+        <div class="mt-3 bg-black p-3 rounded-2xl">
+          <img src="image_821e46.jpg" onerror="this.style.display='none'" alt="Representação dos Éxons do Gene DMD" class="mx-auto max-h-96 rounded-xl">
+        </div>
+      </details>
+    </section>
+
+    <!-- Catálogo Completo da Planilha de Medicamentos -->
+    <section id="catalogo" class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15 space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#BD2831]">Base de Dados Científica</span>
+          <h2 class="text-2xl font-bold text-[#10653A]">Panorama Completo de Terapias e Medicamentos em DMD</h2>
+          <p class="text-sm text-stone-600">Compilado completo de terapias de salto de éxon, terapia gênica, edição gênica, celulares, corticoides e cardioproteção.</p>
+        </div>
+        <select id="filtroCategoria" onchange="renderizarCatalogo()" class="border-2 border-stone-200 rounded-xl p-2.5 text-sm font-semibold text-[#10653A] outline-none">
+          <option value="todas">Todas as Categorias</option>
+          <option value="Exon Skipping">Salto de Éxon (Exon Skipping)</option>
+          <option value="Terapia Gênica">Terapia Gênica (Microdistrofina / AAV)</option>
+          <option value="Edição Gênica">Edição Gênica (CRISPR / ARCUS)</option>
+          <option value="Anti-inflamatórios">Corticoides, Anti-inflamatórios e Epigenética</option>
+          <option value="Cardioproteção">Cardioproteção e Canais Iônicos</option>
+          <option value="Outras">Terapia Celular, Miostatina, Mitocondrial e Membrana</option>
+        </select>
+      </div>
+
+      <div id="listaCatalogo" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- Aviso Médico Legal -->
+    <div class="bg-[#F3BA19]/20 border-l-4 border-[#F3BA19] p-4 rounded-xl text-xs text-[#2C3E35] leading-relaxed">
+      <strong>Aviso Importante:</strong> Este simulador tem caráter estritamente informativo e educacional, baseado na tabela de faseamento dos éxons do gene <em>DMD</em> e nos estudos clínicos vigentes. A elegibilidade real a qualquer terapia de salto de éxon ou terapia gênica exige avaliação médica especializada por geneticista ou neurologista a partir do laudo molecular completo (MLPA / Sequenciamento de Nova Geração).
+    </div>
+
+  </main>
+
+  <footer class="bg-[#10653A] text-white py-8 px-4 text-center text-xs">
+    <p class="font-bold text-sm mb-1">Associação Duchenne Brasil</p>
+    <p class="text-white/75">Acolher • Conectar • Informar • Transformar — “Juntos somos mais fortes.”</p>
+  </footer>
+
+  <script>
+    /**
+     * FASEAMENTO DAS BORDAS DOS 79 ÉXONS DO GENE DMD (Conforme diagrama padrão e imagem)
+     * Códigos de borda:
+     *  0 = Borda Reta "|"
+     *  1 = Ponta para a Direita ">" (na esquerda significa encaixe ">", na direita significa ponta ">")
+     *  2 = Ponta para a Esquerda "<" (na esquerda significa ponta "<", na direita significa encaixe "<")
+     * Regra de encaixe (In-Frame): O éxon A (direita) encaixa perfeitamente no éxon B (esquerda) se A.dir === B.esq
+     */
+    const fasesExons = {
+      1:{e:0,d:1}, 2:{e:1,d:2}, 3:{e:2,d:2}, 4:{e:2,d:2}, 5:{e:2,d:2}, 6:{e:2,d:0}, 7:{e:0,d:1}, 8:{e:1,d:1}, 9:{e:1,d:1}, 10:{e:1,d:1},
+      11:{e:1,d:0}, 12:{e:0,d:1}, 13:{e:1,d:1}, 14:{e:1,d:1}, 15:{e:1,d:1}, 16:{e:1,d:1}, 17:{e:1,d:0}, 18:{e:0,d:1}, 19:{e:1,d:2}, 20:{e:2,d:0},
+      21:{e:0,d:1}, 22:{e:1,d:2}, 23:{e:2,d:1}, 24:{e:1,d:1}, 25:{e:1,d:1}, 26:{e:1,d:2}, 27:{e:2,d:2}, 28:{e:2,d:2}, 29:{e:2,d:2}, 30:{e:2,d:2},
+      31:{e:2,d:2}, 32:{e:2,d:2}, 33:{e:2,d:2}, 34:{e:2,d:2}, 35:{e:2,d:2}, 36:{e:2,d:2}, 37:{e:2,d:2}, 38:{e:2,d:2}, 39:{e:2,d:2}, 40:{e:2,d:2},
+      41:{e:2,d:2}, 42:{e:2,d:2}, 43:{e:2,d:0}, 44:{e:0,d:2}, 45:{e:2,d:0}, 46:{e:0,d:2}, 47:{e:2,d:0}, 48:{e:0,d:0}, 49:{e:0,d:0}, 50:{e:0,d:1},
+      51:{e:1,d:0}, 52:{e:0,d:2}, 53:{e:2,d:1}, 54:{e:1,d:2}, 55:{e:2,d:0}, 56:{e:0,d:1}, 57:{e:1,d:0}, 58:{e:0,d:1}, 59:{e:1,d:0}, 60:{e:0,d:0},
+      61:{e:0,d:2}, 62:{e:2,d:0}, 63:{e:0,d:2}, 64:{e:2,d:2}, 65:{e:2,d:0}, 66:{e:0,d:1}, 67:{e:1,d:2}, 68:{e:2,d:0}, 69:{e:0,d:2}, 70:{e:2,d:0},
+      71:{e:0,d:0}, 72:{e:0,d:0}, 73:{e:0,d:0}, 74:{e:0,d:0}, 75:{e:0,d:1}, 76:{e:1,d:0}, 77:{e:0,d:0}, 78:{e:0,d:1}, 79:{e:1,d:0}
+    };
+
+    // Banco de dados completo extraído da planilha "medicamentos compilado.ods"
+    const bancoMedicamentos = [
+      // EXON SKIPPING ESPECÍFICOS
+      { exonAlvo: 51, categoria: "Exon Skipping", sub: "Salto do Éxon 51 (PMO)", nome: "Eteplirsen (Exondys 51)", status: "Aprovado", entrega: "Infusão IV semanal", mecanismo: "Oligonucleotídeo morfolino (PMO) que induz o salto do éxon 51 no pré-mRNA da distrofina, restaurando a janela de leitura.", paises: "EUA, Israel" },
+      { exonAlvo: 51, categoria: "Exon Skipping", sub: "Salto do Éxon 51 (AOC - Nova Geração)", nome: "DYNE-251 (z-rostudirsen)", status: "Fase 3", entrega: "Infusão IV mensal", mecanismo: "PMO conjugado a fragmento Fab anti-TfR1 para endocitose direcionada ao músculo e salto do éxon 51.", paises: "EUA, Europa, Austrália" },
+      { exonAlvo: 51, categoria: "Exon Skipping", sub: "Salto do Éxon 51 (Química Avançada)", nome: "BMN 351", status: "Fase 2", entrega: "Infusão IV", mecanismo: "ASO de 3ª geração com química estereopura desenhado para o salto eficiente do éxon 51 com alta afinidade muscular.", paises: "EUA, Europa, Japão" },
+      { exonAlvo: 51, categoria: "Exon Skipping", sub: "Salto do Éxon 51", nome: "LE051", status: "Fase 1 Inicial", entrega: "Infusão IV única/escalonada", mecanismo: "Oligonucleotídeo antisense otimizado para o salto terapêutico do éxon 51.", paises: "China" },
+
+      { exonAlvo: 53, categoria: "Exon Skipping", sub: "Salto do Éxon 53 (PMO)", nome: "Golodirsen (Vyondys 53)", status: "Aprovado", entrega: "Infusão IV semanal", mecanismo: "PMO desenhado para induzir a exclusão do éxon 53 durante o splicing do RNA mensageiro da distrofina.", paises: "EUA" },
+      { exonAlvo: 53, categoria: "Exon Skipping", sub: "Salto do Éxon 53 (PMO)", nome: "Viltolarsen (Viltepso)", status: "Aprovado", entrega: "Infusão IV semanal", mecanismo: "Oligômero antisense do tipo morfolino específico para pular o éxon 53 e produzir distrofina truncada funcional.", paises: "EUA, Japão" },
+      { exonAlvo: 53, categoria: "Exon Skipping", sub: "Salto do Éxon 53 (Estereoespecífico)", nome: "WVE-N531", status: "Fase 2", entrega: "Infusão IV", mecanismo: "Oligonucleotídeo antisense sintético estereoespecífico (química PN) com alta penetração celular para salto do éxon 53.", paises: "Reino Unido, EUA, Europa" },
+
+      { exonAlvo: 45, categoria: "Exon Skipping", sub: "Salto do Éxon 45 (PMO)", nome: "Casimersen (Amondys 45)", status: "Aprovado", entrega: "Infusão IV semanal", mecanismo: "PMO que induz o salto seletivo do éxon 45 no pré-mRNA da distrofina para mutações passíveis de enquadramento.", paises: "EUA" },
+      { exonAlvo: 45, categoria: "Exon Skipping", sub: "Salto do Éxon 45 (Peptídeo EEP)", nome: "ENTR-601-45", status: "Fase 1/2", entrega: "Infusão IV", mecanismo: "PMO conjugado a peptídeos cíclicos que facilitam a fuga endossomal para salto do éxon 45.", paises: "EUA, Reino Unido" },
+
+      { exonAlvo: 44, categoria: "Exon Skipping", sub: "Salto do Éxon 44 (AOC)", nome: "AOC 1044 (Delpacibart zotadirsen)", status: "Fase 3", entrega: "Infusão IV", mecanismo: "Conjugado de anticorpo monoclonal anti-TfR1 ligado a oligonucleotídeo antisense para salto do éxon 44.", paises: "EUA, Europa" },
+      { exonAlvo: 44, categoria: "Exon Skipping", sub: "Salto do Éxon 44 (Morfolino Modificado)", nome: "Brogidirsen (NS-089 / NCNP-02)", status: "Fase 2", entrega: "Infusão IV semanal", mecanismo: "Oligonucleotídeo antisense modificado para o salto do éxon 44 do gene da distrofina.", paises: "Japão, EUA" },
+      { exonAlvo: 44, categoria: "Exon Skipping", sub: "Salto do Éxon 44 (Peptídeo EEP)", nome: "ENTR-601-44", status: "Fase 1/2", entrega: "Infusão IV", mecanismo: "PMO conjugado a peptídeos cíclicos que facilitam a fuga endossomal para salto do éxon 44.", paises: "EUA, Reino Unido" },
+
+      { exonAlvo: 50, categoria: "Exon Skipping", sub: "Salto do Éxon 50 (PMO)", nome: "NS-050 / NCNP-03 (Meteor50)", status: "Fase 1/2", entrega: "Infusão IV semanal", mecanismo: "Oligonucleotídeo morfolino (PMO) desenhado especificamente para promover a exclusão do éxon 50.", paises: "Japão, EUA" },
+      { exonAlvo: 50, categoria: "Edição Gênica", sub: "Salto Permanente do Éxon 50 (Base Editing)", nome: "GEN6050X", status: "Fase 1", entrega: "Infusão IV (Dual AAV9)", mecanismo: "Edição de bases de citosina (CBE) guiada por CRISPR para alterar o sítio de splicing e forçar o salto do éxon 50.", paises: "China" },
+
+      // EDIÇÃO GÊNICA HOTSPOT 45-55
+      { exonAlvo: "45-55", categoria: "Edição Gênica", sub: "Nuclease ARCUS (Hotspot Éxons 45–55)", nome: "PBGENE-DMD", status: "Fase 1/2", entrega: "Infusão IV", mecanismo: "Nuclease editada por engenharia proteica (ARCUS) via AAV para excisão genômica do hot-spot mutacional (éxons 45–55).", paises: "EUA" },
+      { exonAlvo: "geral", categoria: "Edição Gênica", sub: "Edição CRISPR-Cas / Excisão", nome: "HG302", status: "Fase 1 Inicial", entrega: "Infusão IV", mecanismo: "Nuclease CRISPR desenhada para clivagem de DNA e correção da leitura do quadro de distrofina.", paises: "China" },
+      { exonAlvo: "geral", categoria: "Edição Gênica", sub: "CRISPR / AAV duplo", nome: "CRISPR Dual AAV", status: "Pré-clínico", entrega: "Infusão IV", mecanismo: "Sistemas de corte pareado para deleção de regiões mutadas via junção terminal (MMEJ/NHEJ).", paises: "EUA, Europa, China" },
+
+      // TERAPIA GÊNICA (INDEPENDENTE DE ÉXON ESPECÍFICO, ATENÇÃO A EXONS INICIAIS)
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Transferência de Microdistrofina (AAV)", nome: "Elevidys (Delandistrogene moxeparvovec)", status: "Aprovado (comercial) / Fase 3/4", entrega: "Infusão IV única", mecanismo: "Vetor AAVrh74 codificando transgene de microdistrofina sob promotor muscular MHCK7 para estabilização do sarcolema (contraindicado em deleções nos éxons 8 e/ou 9).", paises: "EUA, Europa, Japão, Brasil e outros" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Transferência de Microdistrofina (AAV)", nome: "SGT-003", status: "Fase 3 / Fase 1/2 expandida", entrega: "Infusão IV única", mecanismo: "Capsídeo sintético (AAV-SLB101) expressando microdistrofina com domínio de ligação à nNOS.", paises: "EUA, Canadá" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Transferência de Microdistrofina (AAV)", nome: "RGX-202", status: "Fase 1/2", entrega: "Infusão IV única", mecanismo: "Vetor AAV8 expressando microdistrofina desenhada com domínio C-terminal estendido.", paises: "EUA" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Transferência de Microdistrofina (AAV)", nome: "GNT0004", status: "Fase 1/2", entrega: "Infusão IV única", mecanismo: "Vetor AAV8 com microdistrofina encurtada sob promotor sintético específico de músculo.", paises: "França, Reino Unido" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Transferência de Microdistrofina (AAV)", nome: "GNR-097 / JWK007 / BBM-D101", status: "Fase 1 / 2", entrega: "Infusão IV única", mecanismo: "Vetores virais AAV recombinantes transportando transgene de microdistrofina funcional.", paises: "Rússia, China" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Entrega Intratecal de Microdistrofina", nome: "INS1201", status: "Fase 1 (ASCEND)", entrega: "Injeção Intratecal (LCR)", mecanismo: "Vetor AAV9 transportando microdistrofina via neuroeixo para ampla biodistribuição e menor exposição hepática.", paises: "EUA" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "Terapia Gênica Cardíaca", nome: "AAV-SERCA2a / SRD-001 (MUSIC-DMD)", status: "Fase 1b", entrega: "Infusão IV / Intracoronária", mecanismo: "Transfecção via AAV da bomba de cálcio SERCA2a cardíaca para resgatar a cinética de Ca²⁺.", paises: "EUA" },
+      { exonAlvo: "universal", categoria: "Terapia Gênica", sub: "mRNA / saRNA de Utrofina e Distrofina", nome: "SPOT-mRNA03 / RAG-18", status: "Fase 1 Inicial", entrega: "Infusão IV / SC", mecanismo: "Vesículas extracelulares com mRNA de distrofina total (SPOT-mRNA03) ou saRNA estimulador de utrofina endógena (RAG-18).", paises: "China, Austrália" },
+
+      // ANTI-INFLAMATÓRIOS, CORTICOIDES E EPIGENÉTICA
+      { exonAlvo: "universal", categoria: "Anti-inflamatórios", sub: "Inibidor Pan-HDAC (Epigenética)", nome: "Givinostat (Duvyzat)", status: "Aprovado (EUA, Europa, Anvisa Brasil)", entrega: "Solução Oral diária", mecanismo: "Inibidor de histona desacetilases (HDACs); reduz inflamação, combate fibrose e infiltração gordurosa no músculo independentemente da mutação.", paises: "EUA, Europa, Brasil" },
+      { exonAlvo: "universal", categoria: "Anti-inflamatórios", sub: "Esteroide Dissociativo", nome: "Vamorolone (Agamree)", status: "Aprovado", entrega: "Suspensão Oral diária", mecanismo: "Mantém a ação anti-inflamatória via repressão de NF-κB com menor impacto na estatura e saúde óssea.", paises: "EUA, Europa, Reino Unido" },
+      { exonAlvo: "universal", categoria: "Anti-inflamatórios", sub: "Glicocorticoide Padrão", nome: "Deflazacort (Emflaza) / Prednisona", status: "Padrão Clínico Aprovado", entrega: "Via Oral", mecanismo: "Inibição da via inflamatória NF-κB, retardando a perda de força muscular e função respiratória.", paises: "Uso mundial (Brasil incluso)" },
+      { exonAlvo: "universal", categoria: "Anti-inflamatórios", sub: "Modulador Seletivo (SEGRAM) / Anti-CD49d", nome: "Tegacorat (GRM-01) / ATL1102", status: "Fase 2", entrega: "Oral / Subcutânea", mecanismo: "Modulação seletiva do receptor de glicocorticoide (Tegacorat) ou bloqueio da migração de linfócitos T via CD49d (ATL1102).", paises: "EUA, Europa, Austrália" },
+
+      // OUTRAS TERAPIAS (CELULAR, MECANOBIOLOGIA, REGENERAÇÃO)
+      { exonAlvo: "universal", categoria: "Outras", sub: "Terapia Celular (Cardiosferas)", nome: "CAP-1002 (Deramiocel)", status: "Fase 3 (HOPE-3)", entrega: "Infusão IV trimestral", mecanismo: "Células progenitoras derivadas de cardiosferas que secretam exossomos antifibróticos, preservando função cardíaca e motora de membros superiores.", paises: "EUA" },
+      { exonAlvo: "universal", categoria: "Outras", sub: "Terapia Celular (Mioblastos Quiméricos)", nome: "DT-DEC01 / MyoPAXon / EN001", status: "Fase 1 / 2", entrega: "Intra-arterial / IM / IV", mecanismo: "Células quiméricas expressando distrofina (DT-DEC01), progenitores de iPSC (MyoPAXon) e células-tronco mesenquimais (EN001).", paises: "Polônia, EUA, Coreia do Sul" },
+      { exonAlvo: "universal", categoria: "Outras", sub: "Inibidor da Miosina Rápida", nome: "Sevasemten (EDG-5506)", status: "Fase 2/3", entrega: "Cápsula Oral diária", mecanismo: "Protege as fibras musculares rápidas contra o estresse mecânico da contração, prevenindo ruptura do sarcolema.", paises: "EUA, Europa" },
+      { exonAlvo: "universal", categoria: "Outras", sub: "Regeneração de Células Satélites", nome: "SAT-3247 (Forazapadin)", status: "Fase 2", entrega: "Via Oral diária", mecanismo: "Restaura a divisão assimétrica das células-tronco satélites musculares para regenerar fibras funcionais.", paises: "Canadá, EUA, Austrália" },
+      { exonAlvo: "universal", categoria: "Outras", sub: "Inibidores de Miostatina / Activina", nome: "KER-065 / Apitegromab / Taldefgrobep", status: "Fase 1 / 2", entrega: "Subcutânea / IV", mecanismo: "Bloqueiam vias negativas da massa muscular (miostatina/activina), promovendo ganho muscular e ósseo.", paises: "EUA, Europa" },
+
+      // CARDIOPROTEÇÃO
+      { exonAlvo: "universal", categoria: "Cardioproteção", sub: "Padrão-Ouro Cardioprotetor", nome: "Perindopril, Enalapril, Losartana, Eplerenona, Espironolactona, Carvedilol, Sacubitril/Valsartana", status: "Diretriz Clínica Aprovada", entrega: "Via Oral diária", mecanismo: "Bloqueio neuro-humoral (SRAA e simpático) que previne fibrose miocárdica e preserva a fração de ejeção ventricular.", paises: "Uso mundial" },
+      { exonAlvo: "universal", categoria: "Cardioproteção", sub: "Estabilizadores de Cálcio e SGLT2", nome: "ARM210 (Rycal) / Dapagliflozina / Empagliflozina", status: "Fase 1/2 e Fase 2/3", entrega: "Via Oral", mecanismo: "Estabilização do canal de rianodina RyR1/RyR2 impedindo vazamento de cálcio (ARM210) e proteção bioenergética cardíaca (iSGLT2).", paises: "EUA, Europa, França" }
+    ];
+
+    function simboloBorda(fase, lado) {
+      if (fase === 0) return "|";
+      if (fase === 1) return "&gt;";
+      return "&lt;";
+    }
+
+    function descricaoFase(fase) {
+      if (fase === 0) return "Fase 0 (Borda Reta |)";
+      if (fase === 1) return "Fase 1 (Ponta Direita >)";
+      return "Fase 2 (Ponta Esquerda <)";
+    }
+
+    function ajustarCampos() {
+      const tipo = document.getElementById('tipoMutacao').value;
+      const divFim = document.getElementById('divExonFim');
+      const labelInicio = document.getElementById('labelExonInicio');
+      if (tipo === 'nonsense' || tipo === 'ponto') {
+        divFim.classList.add('opacity-40', 'pointer-events-none');
+        labelInicio.textContent = "Éxon onde está a Mutação";
+        document.getElementById('exonFim').value = document.getElementById('exonInicio').value;
+      } else {
+        divFim.classList.remove('opacity-40', 'pointer-events-none');
+        labelInicio.textContent = "Do Éxon (Inicial)";
+      }
+    }
+
+    function preencherExemplo(tipo, ini, fim) {
+      document.getElementById('tipoMutacao').value = tipo;
+      document.getElementById('exonInicio').value = ini;
+      document.getElementById('exonFim').value = fim;
+      ajustarCampos();
+      analisarMutacao();
+    }
+
+    function renderizarGradeExons(afetados = [], saltados = []) {
+      const container = document.getElementById('gradeExons');
+      container.innerHTML = '';
+      for (let i = 1; i <= 79; i++) {
+        const f = fasesExons[i];
+        let corBg = 'bg-[#3B71B8] text-white';
+        if (afetados.includes(i)) corBg = 'bg-[#BD2831] text-white ring-2 ring-red-300 scale-105';
+        else if (saltados.includes(i)) corBg = 'bg-[#F3BA19] text-zinc-950 ring-2 ring-yellow-200 scale-105';
+
+        const el = document.createElement('div');
+        el.className = `exon-box rounded ${corBg}`;
+        el.title = `Éxon ${i} | Esquerda: ${descricaoFase(f.e)} | Direita: ${descricaoFase(f.d)}`;
+        el.innerHTML = `<span class="opacity-70 text-[10px] mr-1">${simboloBorda(f.e)}</span><span>${i}</span><span class="opacity-70 text-[10px] ml-1">${simboloBorda(f.d)}</span>`;
+        container.appendChild(el);
+      }
+    }
+
+    function analisarMutacao() {
+      const tipo = document.getElementById('tipoMutacao').value;
+      let ini = parseInt(document.getElementById('exonInicio').value);
+      let fim = parseInt(document.getElementById('exonFim').value);
+
+      if (isNaN(ini) || ini < 1 || ini > 79) {
+        alert("Por favor, digite um número de éxon válido entre 1 e 79.");
+        return;
+      }
+      if (tipo === 'nonsense' || tipo === 'ponto' || isNaN(fim)) {
+        fim = ini;
+      }
+      if (fim < ini) {
+        const temp = ini; ini = fim; fim = temp;
+      }
+      if (fim > 79) fim = 79;
+
+      const afetados = [];
+      for (let i = ini; i <= fim; i++) afetados.push(i);
+
+      const area = document.getElementById('areaResultado');
+      area.classList.remove('hidden');
+
+      let html = '';
+      let opcoesSalto = []; // Lista de éxons que corrigem o quadro
+
+      // 1. LÓGICA PARA DELEÇÃO
+      if (tipo === 'delecao') {
+        const exonAnt = ini - 1;
+        const exonPos = fim + 1;
+
+        if (exonAnt < 1 || exonPos > 79) {
+          html += criarAlerta("Mutação nas extremidades do gene (Éxon 1 ou 79)", "Deleções que removem o promotor inicial (éxon 1) ou a região final (éxon 79) não possuem dois éxons vizinhos para reconexão por salto simples, sendo avaliadas prioritariamente para terapias gênicas ou sistêmicas.", "amarelo");
+        } else {
+          const faseDirAnt = fasesExons[exonAnt].d;
+          const faseEsqPos = fasesExons[exonPos].e;
+          const jaEmQuadro = (faseDirAnt === faseEsqPos);
+
+          // Testar salto do éxon posterior (ex: Del 48-50 -> pular 51)
+          if (exonPos + 1 <= 79 && fasesExons[exonAnt].d === fasesExons[exonPos + 1].e) {
+            opcoesSalto.push({ exon: exonPos, vizinhoEsq: exonAnt, vizinhoDir: exonPos + 1, direcao: "posterior" });
+          }
+          // Testar salto do éxon anterior (ex: Del 46-47 -> pular 45)
+          if (exonAnt - 1 >= 1 && fasesExons[exonAnt - 1].d === fasesExons[exonPos].e) {
+            opcoesSalto.push({ exon: exonAnt, vizinhoEsq: exonAnt - 1, vizinhoDir: exonPos, direcao: "anterior" });
+          }
+
+          // Testar salto duplo se não houver salto único
+          let opcoesDuplo = [];
+          if (opcoesSalto.length === 0 && !jaEmQuadro) {
+            if (exonPos + 2 <= 79 && fasesExons[exonAnt].d === fasesExons[exonPos + 2].e) {
+              opcoesDuplo.push(`${exonPos} e ${exonPos + 1}`);
+            }
+            if (exonAnt - 2 >= 1 && fasesExons[exonAnt - 2].d === fasesExons[exonPos].e) {
+              opcoesDuplo.push(`${exonAnt - 1} e ${exonAnt}`);
+            }
+          }
+
+          if (jaEmQuadro) {
+            html += `
+              <div class="bg-emerald-50 border-2 border-[#10653A] rounded-3xl p-6 space-y-3">
+                <span class="bg-[#10653A] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Deleção Em Quadro (In-Frame)</span>
+                <h3 class="text-2xl font-bold text-[#10653A]">As bordas dos éxons ${exonAnt} e ${exonPos} já se encaixam!</h3>
+                <p class="text-sm text-[#2C3E35]">
+                  O <strong>Éxon ${exonAnt}</strong> termina em <strong>${descricaoFase(faseDirAnt)}</strong> e o <strong>Éxon ${exonPos}</strong> começa em <strong>${descricaoFase(faseEsqPos)}</strong>. 
+                  Como as bordas são compatíveis, a janela de leitura do RNA mensageiro é mantida (padrão frequentemente associado a quadros mais leves / Becker ou elegível a terapias universais de proteção muscular).
+                </p>
+              </div>`;
+          } else {
+            html += `
+              <div class="bg-white border-2 border-[#BD2831] rounded-3xl p-6 space-y-4 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <span class="bg-[#BD2831] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Fora da Janela de Leitura (Out-of-Frame)</span>
+                  <span class="text-xs font-bold text-stone-500">Deleção dos éxons ${ini === fim ? ini : ini + ' ao ' + fim}</span>
+                </div>
+                <h3 class="text-xl md:text-2xl font-bold text-[#10653A]">
+                  Análise de Encaixe: Éxon ${exonAnt} com Éxon ${exonPos}
+                </h3>
+                <p class="text-sm text-[#2C3E35] leading-relaxed">
+                  Com a ausência ${ini === fim ? 'do éxon ' + ini : 'dos éxons ' + ini + ' a ' + fim}, o <strong>Éxon ${exonAnt}</strong> (borda direita: <strong>${descricaoFase(faseDirAnt)}</strong>) tenta se unir ao <strong>Éxon ${exonPos}</strong> (borda esquerda: <strong>${descricaoFase(faseEsqPos)}</strong>). 
+                  Como os formatos são diferentes, o encaixe interrompe a leitura da proteína distrofina.
+                </p>
+
+                ${opcoesSalto.length > 0 ? `
+                  <div class="bg-[#10653A]/10 border-l-4 border-[#10653A] p-4 rounded-xl space-y-2">
+                    <p class="font-bold text-[#10653A] text-base">✅ PASSÍVEL DE SALTO DE ÉXON (EXON SKIPPING)!</p>
+                    <ul class="list-disc list-inside text-sm space-y-1 text-[#1E3A2B]">
+                      ${opcoesSalto.map(op => `
+                        <li>
+                          <strong>Salto do Éxon ${op.exon}:</strong> Ao pular o éxon ${op.exon}, o <strong>Éxon ${op.vizinhoEsq}</strong> (${descricaoFase(fasesExons[op.vizinhoEsq].d)}) conecta-se diretamente ao <strong>Éxon ${op.vizinhoDir}</strong> (${descricaoFase(fasesExons[op.vizinhoDir].e)}), restaurando perfeitamente a janela de leitura!
+                        </li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                ` : `
+                  <div class="bg-amber-50 border-l-4 border-[#F3BA19] p-4 rounded-xl space-y-2">
+                    <p class="font-bold text-amber-900">⚠️ Salto de um único éxon não restaura o encaixe diretamente</p>
+                    <p class="text-sm text-amber-900/90">
+                      Para esta deleção específica, pular apenas 1 éxon vizinho não iguala as fases. 
+                      ${opcoesDuplo.length > 0 ? `Seria necessário o <strong>salto duplo dos éxons ${opcoesDuplo.join(' ou ')}</strong> (ou edição gênica da região 45–55 se aplicável).` : ''}
+                      Confira abaixo as terapias gênicas e sistêmicas que atuam independentemente do éxon!
+                    </p>
+                  </div>
+                `}
+              </div>`;
+          }
+        }
+      }
+
+      // 2. LÓGICA PARA DUPLICAÇÃO
+      else if (tipo === 'duplicacao') {
+        if (ini === fim) {
+          opcoesSalto.push({ exon: ini, vizinhoEsq: ini - 1, vizinhoDir: ini + 1, direcao: "duplicado" });
+        }
+        html += `
+          <div class="bg-white border-2 border-[#10653A] rounded-3xl p-6 space-y-3 shadow-sm">
+            <span class="bg-[#F3BA19] text-zinc-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Duplicação de Éxon(s): ${ini === fim ? ini : ini + ' a ' + fim}</span>
+            <h3 class="text-xl md:text-2xl font-bold text-[#10653A]">Análise de Salto para Duplicação</h3>
+            <p class="text-sm text-[#2C3E35] leading-relaxed">
+              Nas duplicações de um único éxon (como a duplicação do éxon ${ini}), o salto terapêutico (<em>Exon Skipping</em>) direcionado ao próprio <strong>Éxon ${ini}</strong> pode remover a cópia extra e restaurar o transcrito normal de distrofina. Para duplicações de múltiplos éxons, terapias gênicas de microdistrofina e terapias não dependentes de mutação são as principais indicações.
+            </p>
+          </div>`;
+      }
+
+      // 3. LÓGICA PARA MUTAÇÃO DE PONTO / NONSENSE
+      else {
+        const f = fasesExons[ini];
+        const exonEmFaseInterna = (f.e === f.d); // Se o próprio éxon tem borda esq == dir, pulá-lo mantém os vizinhos encaixados!
+        if (exonEmFaseInterna) {
+          opcoesSalto.push({ exon: ini, vizinhoEsq: ini - 1, vizinhoDir: ini + 1, direcao: "próprio" });
+        }
+
+        html += `
+          <div class="bg-white border-2 border-[#10653A] rounded-3xl p-6 space-y-3 shadow-sm">
+            <span class="bg-[#BD2831] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+              ${tipo === 'nonsense' ? 'Mutação de Ponto Nonsense (Códon de Parada)' : 'Pequena Alteração / Ponto'} no Éxon ${ini}
+            </span>
+            <h3 class="text-xl md:text-2xl font-bold text-[#10653A]">Análise do Éxon ${ini} (${descricaoFase(f.e)} → ${descricaoFase(f.d)})</h3>
+            <p class="text-sm text-[#2C3E35] leading-relaxed">
+              ${exonEmFaseInterna 
+                ? `✅ <strong>Passível de Salto do próprio Éxon ${ini}:</strong> Como o Éxon ${ini} começa em <strong>${descricaoFase(f.e)}</strong> e termina na mesma fase (<strong>${descricaoFase(f.d)}</strong>), pular o próprio Éxon ${ini} mantém o Éxon ${ini-1} e o Éxon ${ini+1} perfeitamente encaixados!`
+                : `⚠️ <strong>Atenção ao Faseamento:</strong> O Éxon ${ini} começa em <strong>${descricaoFase(f.e)}</strong> e termina em <strong>${descricaoFase(f.d)}</strong>. Pular apenas o Éxon ${ini} isoladamente alteraria a fase entre os éxons ${ini-1} e${ini+1}.`}
+            </p>
+            ${tipo === 'nonsense' ? `
+              <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-xl text-sm text-blue-950">
+                <strong>Nota sobre Mutações Nonsense (Parada Prematura):</strong> Além das terapias universais abaixo, mutações <em>nonsense</em> são alvo de terapias específicas de leitura ribossomal (<em>readthrough</em> de códon de parada prematuro, como Ataluren/Translarna, conforme indicação regulatória e médica).
+              </div>
+            ` : ''}
+          </div>`;
+      }
+
+      // 4. BUSCAR MEDICAMENTOS DE SALTO DE ÉXON CORRESPONDENTES
+      const exonsAlvoNums = opcoesSalto.map(o => o.exon);
+      const medsExonEspecifico = bancoMedicamentos.filter(m => exonsAlvoNums.includes(m.exonAlvo));
+
+      // Verificar se a mutação está dentro do hotspot 45-55 para destacar o PBGENE-DMD
+      const dentroHotspot45_55 = (ini >= 45 && fim <= 55);
+      const medHotspot = dentroHotspot45_55 ? bancoMedicamentos.filter(m => m.exonAlvo === "45-55") : [];
+
+      html += `
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-[#10653A]/15 space-y-6">
+          <h3 class="text-xl font-bold text-[#10653A]">
+            2. Medicamentos de Salto de Éxon / Correção Direcionada para este Caso
+          </h3>
+
+          ${medsExonEspecifico.length > 0 ? `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${medsExonEspecifico.map(m => criarCardMed(m, true)).join('')}
+            </div>
+          ` : `
+            <div class="bg-stone-100 p-5 rounded-2xl text-sm text-stone-700">
+              ${exonsAlvoNums.length > 0 
+                ? `O salto indicado seria para o(s) <strong>Éxon(s) ${exonsAlvoNums.join(' ou ')}</strong>. Atualmente, os fármacos de salto de éxon aprovados ou em fases clínicas avançadas concentram-se nos éxons <strong>44, 45, 50, 51 e 53</strong>. Veja abaixo as terapias gênicas, de edição e sistêmicas aplicáveis!`
+                : `Não há medicamento de salto de éxon único aplicável para esta combinação, mas o paciente pode ser elegível às terapias gênicas (Microdistrofina) e medicamentos sistêmicos aprovados listados logo abaixo.`}
+            </div>
+          `}
+
+          ${medHotspot.length > 0 ? `
+            <div class="pt-2">
+              <p class="text-xs font-bold uppercase tracking-wider text-[#BD2831] mb-3">Edição Gênica da Região Hotspot (Éxons 45 a 55):</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${medHotspot.map(m => criarCardMed(m, true)).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+
+      // 5. MOSTRAR TERAPIAS UNIVERSAIS (QUE INDEPENDEM DO ÉXON)
+      const avisoExon8_9 = (ini <= 9 && fim >= 8) 
+        ? `<div class="bg-red-50 border-l-4 border-[#BD2831] p-3 rounded-xl text-xs text-red-900 font-semibold">Atenção: Deleções nos éxons 8 e/ou 9 possuem restrição imunológica descrita em bula para certas terapias de microdistrofina (como o Elevidys). Converse sempre com o médico geneticista.</div>` 
+        : '';
+
+      const medsUniversais = bancoMedicamentos.filter(m => m.exonAlvo === "universal").slice(0, 6);
+      html += `
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15 space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+            <div>
+              <h3 class="text-xl font-bold text-[#10653A]">3. Terapias Independentes de Éxon (Terapia Gênica, Epigenética e Corticoides)</h3>
+              <p class="text-xs text-stone-600">Terapias aprovadas ou em estudo que atuam para todos os tipos de mutação na DMD:</p>
+            </div>
+            <a href="#catalogo" class="text-xs font-bold text-[#BD2831] hover:underline">Ver todas as 35+ terapias ↓</a>
+          </div>
+          ${avisoExon8_9}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${medsUniversais.map(m => criarCardMed(m, false)).join('')}
+          </div>
+        </div>
+      `;
+
+      area.innerHTML = html;
+      renderizarGradeExons(afetados, exonsAlvoNums);
+      area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function criarCardMed(m, destaque) {
+      const isAprovado = m.status.toLowerCase().includes('aprovado');
+      const badgeCor = isAprovado ? 'bg-[#10653A] text-white' : 'bg-[#F3BA19]/30 text-[#1E3A2B]';
+      const bordaCor = destaque ? 'border-2 border-[#10653A]' : 'border border-stone-200';
+      return `
+        <div class="bg-[#F6F6EA]/60 rounded-2xl p-5 ${bordaCor} flex flex-col justify-between space-y-3">
+          <div class="space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#BD2831]">${m.sub}</span>
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${badgeCor}">${m.status}</span>
+            </div>
+            <h4 class="text-lg font-bold text-[#10653A]">${m.nome}</h4>
+            <p class="text-xs text-[#2C3E35]/90 leading-relaxed">${m.mecanismo}</p>
+          </div>
+          <div class="pt-2 border-t border-stone-200/80 flex flex-wrap justify-between gap-2 text-[11px] text-stone-600 font-medium">
+            <span><strong>Via:</strong> ${m.entrega}</span>
+            <span><strong>Regiões:</strong> ${m.paises}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function criarAlerta(titulo, texto, cor) {
+      return `
+        <div class="bg-amber-50 border-2 border-[#F3BA19] rounded-3xl p-6 space-y-2">
+          <h3 class="text-lg font-bold text-amber-950">${titulo}</h3>
+          <p class="text-sm text-amber-900">${texto}</p>
+        </div>`;
+    }
+
+    function renderizarCatalogo() {
+      const filtro = document.getElementById('filtroCategoria').value;
+      const container = document.getElementById('listaCatalogo');
+      const filtrados = bancoMedicamentos.filter(m => {
+        if (filtro === 'todas') return true;
+        return m.categoria.includes(filtro);
+      });
+      container.innerHTML = filtrados.map(m => criarCardMed(m, false)).join('');
+    }
+
+    // Inicializar página
+    window.onload = () => {
+      renderizarGradeExons([], []);
+      renderizarCatalogo();
+    };
+  </script>
+</body>
+</html>
