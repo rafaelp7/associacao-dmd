@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terapias e Tratamentos - Associação Duchenne Brasil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cor-amarelo: #F3BA19;
+      --cor-vermelho: #BD2831;
+      --cor-verde: #10653A;
+      --cor-fundo: #F6F6EA;
+      --cor-texto: #1E3A2B;
+    }
+    body {
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .fonte-manuscrita {
+      font-family: 'Caveat', cursive;
+    }
+    /* Efeito suave ao passar o mouse nos cards e categorias */
+    .card-terapia .detalhe-hover {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    }
+    .card-terapia:hover .detalhe-hover,
+    .card-terapia:focus-within .detalhe-hover {
+      max-height: 320px;
+      opacity: 1;
+      margin-top: 0.75rem;
+    }
+    .bloco-categoria .subcategorias-pill {
+      opacity: 0.75;
+      transition: all 0.25s ease;
+    }
+    .bloco-categoria:hover .subcategorias-pill {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Barra Superior Decorativa -->
+  <div class="h-2 w-full bg-gradient-to-r from-[#10653A] via-[#F3BA19] to-[#BD2831]"></div>
+
+  <!-- Cabeçalho / Menu -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-[#10653A]/10 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="LOGO.png" alt="Logo Duchenne Brasil" class="h-14 w-auto object-contain">
+      </a>
+      <nav class="flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-[#10653A]">
+        <a href="index.html" class="hover:text-[#BD2831] transition">← Início</a>
+        <a href="terapias.html" onclick="voltarMenuPrincipal(); return false;" class="text-[#BD2831] font-bold underline decoration-[#F3BA19] decoration-2 underline-offset-4">
+          Terapias/Tratamento
+        </a>
+        <a href="analise-exon.html" class="bg-[#F3BA19] hover:bg-[#dca510] text-[#1E3A2B] font-bold px-4 py-2 rounded-full transition shadow-sm">
+          🧬 Simulador de Éxons
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10 flex-1 w-full">
+
+    <!-- ========================================================= -->
+    <!-- TELA 1: AS 3 JANELAS CLICÁVEIS PRINCIPAIS                  -->
+    <!-- ========================================================= -->
+    <div id="telaSelecao" class="space-y-10">
+      <div class="text-center space-y-3">
+        <span class="bg-[#10653A]/10 text-[#10653A] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+          Panorama Científico • Duchenne Brasil
+        </span>
+        <h1 class="text-3xl md:text-5xl font-bold text-[#10653A]">
+          Terapias e <span class="fonte-manuscrita text-5xl md:text-6xl text-[#BD2831]">Tratamentos</span>
+        </h1>
+        <p class="text-sm md:text-base text-[#2C3E35]/85 max-w-2xl mx-auto leading-relaxed">
+          Clique em uma das três janelas abaixo para explorar os medicamentos e pesquisas divididos por categoria e passe o mouse sobre cada item para visualizar suas subdivisões e mecanismos de ação.
+        </p>
+      </div>
+
+      <!-- As 3 Janelas Clicáveis -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
+
+        <!-- Janela 1: Terapias Aprovadas -->
+        <button onclick="abrirTelaFase('aprovadas')" class="group text-left bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl border-2 border-[#10653A]/20 hover:border-[#10653A] transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-3 bg-[#10653A]"></div>
+          <div class="space-y-4 pt-2">
+            <div class="w-14 h-14 rounded-2xl bg-[#10653A]/10 text-[#10653A] flex items-center justify-center text-2xl font-bold group-hover:bg-[#10653A] group-hover:text-white transition">
+              ✓
+            </div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#10653A] bg-[#10653A]/10 px-3 py-1 rounded-full">
+              Uso Clínico / Comercial
+            </span>
+            <h2 class="text-2xl font-bold text-[#10653A]">Terapias Aprovadas</h2>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+              Medicamentos, terapias gênicas, saltos de éxon, corticoides, reguladores epigenéticos e cardioprotetores já aprovados por agências regulatórias (Anvisa, FDA, EMA) ou diretrizes clínicas.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-bold text-[#10653A]">
+            <span>Explorar categorias aprovadas</span>
+            <span class="group-hover:translate-x-1.5 transition">→</span>
+          </div>
+        </button>
+
+        <!-- Janela 2: Terapias em Teste -->
+        <button onclick="abrirTelaFase('em-teste')" class="group text-left bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl border-2 border-[#F3BA19]/40 hover:border-[#F3BA19] transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-3 bg-[#F3BA19]"></div>
+          <div class="space-y-4 pt-2">
+            <div class="w-14 h-14 rounded-2xl bg-[#F3BA19]/20 text-[#1E3A2B] flex items-center justify-center text-2xl font-bold group-hover:bg-[#F3BA19] transition">
+              🔬
+            </div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-amber-900 bg-[#F3BA19]/25 px-3 py-1 rounded-full">
+              Ensaios Clínicos (Fases 1, 2 e 3)
+            </span>
+            <h2 class="text-2xl font-bold text-[#10653A]">Terapias em Teste</h2>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+              Terapias inovadoras em investigação clínica ativa em humanos: nova geração de salto de éxon, microdistrofinas, edição gênica (CRISPR/ARCUS), terapia celular e proteção muscular.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-bold text-[#10653A]">
+            <span>Explorar terapias em teste</span>
+            <span class="group-hover:translate-x-1.5 transition">→</span>
+          </div>
+        </button>
+
+        <!-- Janela 3: Terapias em Fase Pré-Clínica -->
+        <button onclick="abrirTelaFase('pre-clinica')" class="group text-left bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl border-2 border-[#BD2831]/20 hover:border-[#BD2831] transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-3 bg-[#BD2831]"></div>
+          <div class="space-y-4 pt-2">
+            <div class="w-14 h-14 rounded-2xl bg-[#BD2831]/10 text-[#BD2831] flex items-center justify-center text-2xl font-bold group-hover:bg-[#BD2831] group-hover:text-white transition">
+              🧪
+            </div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#BD2831] bg-[#BD2831]/10 px-3 py-1 rounded-full">
+              Pesquisa Laboratorial e Translacional
+            </span>
+            <h2 class="text-2xl font-bold text-[#BD2831]">Terapias em Fase Pré-Clínica</h2>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+              Desenvolvimentos científicos iniciais: vetores cardiotrópicos, utrofina viral, selantes de membrana, bloqueadores de canais iônicos e novos moduladores anti-inflamatórios.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-bold text-[#BD2831]">
+            <span>Explorar fase pré-clínica</span>
+            <span class="group-hover:translate-x-1.5 transition">→</span>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TELA 2: CONTEÚDO DA FASE ESCOLHIDA DIVIDIDO POR CATEGORIA -->
+    <!-- ========================================================= -->
+    <div id="telaDetalhes" class="hidden space-y-8">
+      
+      <!-- Topo de Navegação Rápida entre as 3 Telas -->
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-[#10653A]/10">
+        <button onclick="voltarMenuPrincipal()" class="inline-flex items-center gap-2 text-sm font-bold text-[#10653A] hover:text-[#BD2831] px-3 py-1.5 rounded-xl hover:bg-stone-100 transition">
+          ← Voltar para as 3 Janelas Principais
+        </button>
+
+        <div class="flex flex-wrap gap-2">
+          <button id="btnTab-aprovadas" onclick="abrirTelaFase('aprovadas')" class="text-xs font-bold px-4 py-2 rounded-xl transition">
+            ✓ Terapias Aprovadas
+          </button>
+          <button id="btnTab-em-teste" onclick="abrirTelaFase('em-teste')" class="text-xs font-bold px-4 py-2 rounded-xl transition">
+            🔬 Terapias em Teste
+          </button>
+          <button id="btnTab-pre-clinica" onclick="abrirTelaFase('pre-clinica')" class="text-xs font-bold px-4 py-2 rounded-xl transition">
+            🧪 Fase Pré-Clínica
+          </button>
+        </div>
+      </div>
+
+      <!-- Cabeçalho da Fase Ativa -->
+      <div id="cabecalhoFase" class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15"></div>
+
+      <!-- Dica Interativa -->
+      <div class="bg-[#F3BA19]/20 border-l-4 border-[#F3BA19] px-4 py-3 rounded-xl flex items-center justify-between text-xs md:text-sm text-[#1E3A2B]">
+        <span>💡 <strong>Dica:</strong> Passe o mouse sobre qualquer janela de terapia (ou toque no celular) para abrir a <strong>subdivisão da categoria</strong>, mecanismo de ação e forma de entrega.</span>
+      </div>
+
+      <!-- Container onde as Categorias e Janelas de Terapia são inseridas -->
+      <div id="containerCategorias" class="space-y-10"></div>
+
+    </div>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-[#10653A] text-white py-8 px-4 text-center text-xs mt-12">
+    <p class="font-bold text-sm mb-1">Associação Duchenne Brasil</p>
+    <p class="text-white/75">Acolher • Conectar • Informar • Transformar — “Juntos somos mais fortes.”</p>
+  </footer>
+
+  <script>
+    // Base completa extraída da planilha "medicamentos compilado.ods"
+    const todasTerapias = [
+      // ==================== 1. TERAPIAS APROVADAS ====================
+      {
+        grupo: "aprovadas",
+        categoria: "Terapia Gênica",
+        subcategoria: "Transferência de Microdistrofina (AAV)",
+        nome: "Elevidys (Delandistrogene moxeparvovec)",
+        status: "Aprovado (comercial) / Fase 3/4 confirmatória",
+        entrega: "Infusão Intravenosa (IV) única",
+        mecanismo: "Vetor AAVrh74 codificando transgene encurtado de microdistrofina sob promotor muscular MHCK7 para estabilização do sarcolema.",
+        paises: "EUA, Europa, Japão, Brasil e outros"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Exon Skipping (Salto de Éxon - PMO)",
+        subcategoria: "Salto do Éxon 51",
+        nome: "Eteplirsen (Exondys 51)",
+        status: "Aprovado",
+        entrega: "Infusão Intravenosa (IV) semanal",
+        mecanismo: "Oligonucleotídeo morfolino (PMO) que induz o salto do éxon 51 no pré-mRNA da distrofina, restaurando a janela de leitura.",
+        paises: "EUA, Israel"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Exon Skipping (Salto de Éxon - PMO)",
+        subcategoria: "Salto do Éxon 53",
+        nome: "Golodirsen (Vyondys 53)",
+        status: "Aprovado",
+        entrega: "Infusão Intravenosa (IV) semanal",
+        mecanismo: "PMO desenhado para induzir a exclusão do éxon 53 durante o splicing do RNA mensageiro da distrofina.",
+        paises: "EUA"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Exon Skipping (Salto de Éxon - PMO)",
+        subcategoria: "Salto do Éxon 53",
+        nome: "Viltolarsen (Viltepso)",
+        status: "Aprovado",
+        entrega: "Infusão Intravenosa (IV) semanal",
+        mecanismo: "Oligômero antisense do tipo morfolino específico para pular o éxon 53 e produzir distrofina truncada interna funcional.",
+        paises: "EUA, Japão"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Exon Skipping (Salto de Éxon - PMO)",
+        subcategoria: "Salto do Éxon 45",
+        nome: "Casimersen (Amondys 45)",
+        status: "Aprovado",
+        entrega: "Infusão Intravenosa (IV) semanal",
+        mecanismo: "PMO que induz o salto seletivo do éxon 45 no pré-mRNA da distrofina para mutações passíveis de enquadramento.",
+        paises: "EUA"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Leitura Ribossomal (Mutação Nonsense)",
+        subcategoria: "Supressão de Códon de Parada Prematuro",
+        nome: "Atalureno (Translarna)",
+        status: "Aprovado (Anvisa Brasil / Mutações Nonsense)",
+        entrega: "Via Oral diária",
+        mecanismo: "Promove a leitura ribossomal (readthrough) do códon de parada prematuro no mRNA, permitindo a síntese de distrofina funcional.",
+        paises: "Brasil, Reino Unido e outros"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Anti-inflamatórios e Corticoides",
+        subcategoria: "Glicocorticoide Clássico",
+        nome: "Prednisona / Prednisolona",
+        status: "Padrão Clínico Aprovado",
+        entrega: "Via Oral (diário ou intermitente)",
+        mecanismo: "Ligação ao receptor de glicocorticoide citosólico; inibe a via inflamatória do NF-κB, reduzindo o infiltrado inflamatório e atrasando a perda de força muscular.",
+        paises: "Uso mundial"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Anti-inflamatórios e Corticoides",
+        subcategoria: "Glicocorticoide Oxazolínico",
+        nome: "Deflazacort (Emflaza)",
+        status: "Aprovado",
+        entrega: "Via Oral diária",
+        mecanismo: "Pró-fármaco glicocorticoide com menor retenção de sódio e menor lipogênese do que prednisona, exercendo forte imunossupressão na degeneração muscular.",
+        paises: "EUA, Europa, Brasil"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Anti-inflamatórios e Corticoides",
+        subcategoria: "Agonista Dissociativo / Estabilizador",
+        nome: "Vamorolone (Agamree)",
+        status: "Aprovado",
+        entrega: "Suspensão Oral diária",
+        mecanismo: "Modulador esteroide dissociativo que mantém a transrepressão de NF-κB sem ativar vias associadas a perda óssea e baixa estatura; antagonista mineralocorticoide.",
+        paises: "EUA, Europa, Reino Unido"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Regulação Epigenética / Modulação Enzimática",
+        subcategoria: "Inibidor Pan-HDAC",
+        nome: "Givinostat (Duvyzat)",
+        status: "Aprovado",
+        entrega: "Solução Oral diária",
+        mecanismo: "Inibidor de histona desacetilases (HDACs classes I e II); reduz a inflamação tecidual, combate a fibrose e a infiltração de adipócitos no músculo.",
+        paises: "EUA, Europa, Brasil (Anvisa)"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Cardioproteção Farmacológica (Padrão-Ouro)",
+        subcategoria: "Inibidores da ECA / Antagonistas AT1",
+        nome: "Perindopril, Enalapril, Lisinopril, Losartana",
+        status: "Diretriz Clínica Aprovada (Profilático 8–10 anos)",
+        entrega: "Via Oral diária",
+        mecanismo: "Bloqueio do sistema renina-angiotensina-aldosterona (SRAA); reduzem a pós-carga ventricular, evitam dilatação patológica e retardam a queda da fração de ejeção.",
+        paises: "Uso mundial"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Cardioproteção Farmacológica (Padrão-Ouro)",
+        subcategoria: "Antagonistas de Mineralocorticoides",
+        nome: "Eplerenona, Espironolactona",
+        status: "Diretriz Clínica Aprovada",
+        entrega: "Via Oral diária",
+        mecanismo: "Antagonismo seletivo da aldosterona; desaceleram a fibrose miocárdica de modo sinérgico com os iECA.",
+        paises: "Uso mundial"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Cardioproteção Farmacológica (Padrão-Ouro)",
+        subcategoria: "Betabloqueadores Cardioseletivos",
+        nome: "Carvedilol, Bisoprolol, Metoprolol",
+        status: "Diretriz Clínica Aprovada",
+        entrega: "Via Oral diária",
+        mecanismo: "Bloqueio adrenérgico beta-1/beta-2; controlam taquicardia de repouso e reduzem o risco de arritmias ventriculares.",
+        paises: "Uso mundial"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Cardioproteção Farmacológica (Padrão-Ouro)",
+        subcategoria: "Inibidor da Neprilisina e BRA (ARNI)",
+        nome: "Sacubitril / Valsartana (Entresto)",
+        status: "Uso Clínico Estabelecido (em disfunção)",
+        entrega: "Via Oral diária",
+        mecanismo: "Aumento dos peptídeos natriuréticos endógenos aliado ao bloqueio de angiotensina II; suporte em disfunção sistólica e insuficiência cardíaca.",
+        paises: "Uso mundial"
+      },
+      {
+        grupo: "aprovadas",
+        categoria: "Metabolismo e Bioenergética Mitocondrial",
+        subcategoria: "Análogo da Coenzima Q10",
+        nome: "Idebenona",
+        status: "Ensaios Concluídos / Padrão em centros selecionados",
+        entrega: "Via Oral diária",
+        mecanismo: "Antioxidante sintético carreador de elétrons; transfere elétrons diretamente ao complexo III mitocondrial, reduzindo o estresse oxidativo respiratório.",
+        paises: "Europa, EUA"
+      },
+
+      // ==================== 2. TERAPIAS EM TESTE ====================
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Gênica",
+        subcategoria: "Transferência de Microdistrofina (AAV)",
+        nome: "SGT-003",
+        status: "Fase 3 / Fase 1/2 expandida",
+        entrega: "Infusão Intravenosa (IV) única",
+        mecanismo: "Capsídeo sintético tropismocárdico/muscular (AAV-SLB101) expressando microdistrofina com inclusão do domínio de ligação neuronal à nNOS.",
+        paises: "EUA, Canadá"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Gênica",
+        subcategoria: "Transferência de Microdistrofina (AAV)",
+        nome: "RGX-202",
+        status: "Fase 1/2",
+        entrega: "Infusão Intravenosa (IV) única",
+        mecanismo: "Vetor AAV8 expressando microdistrofina desenhada com domínio C-terminal específico para retenção da integridade de membrana.",
+        paises: "EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Gênica",
+        subcategoria: "Transferência de Microdistrofina (AAV)",
+        nome: "GNT0004",
+        status: "Fase 1/2",
+        entrega: "Infusão Intravenosa (IV) única",
+        mecanismo: "Vetor AAV8 com microdistrofina encurtada sob promotor sintético específico de músculo.",
+        paises: "França, Reino Unido"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Gênica",
+        subcategoria: "Transferência de Microdistrofina (AAV)",
+        nome: "GNR-097 / JWK007 / BBM-D101",
+        status: "Fase 1 e Fase 1/2",
+        entrega: "Infusão Intravenosa (IV) única",
+        mecanismo: "Vetores virais AAV recombinantes otimizados para transportar sequência de microdistrofina funcional.",
+        paises: "Rússia, China"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Gênica",
+        subcategoria: "Entrega Intratecal de Microdistrofina",
+        nome: "INS1201",
+        status: "Fase 1 (Estudo ASCEND)",
+        entrega: "Injeção Intratecal (LCR)",
+        mecanismo: "Vetor AAV9 transportando microdistrofina via neuroeixo para ampla biodistribuição e menor exposição hepática sistêmica.",
+        paises: "EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Gênica",
+        subcategoria: "Terapia Gênica Cardíaca (Homeostase de Cálcio)",
+        nome: "AAV-SERCA2a / SRD-001 (MUSIC-DMD)",
+        status: "Fase 1b",
+        entrega: "Infusão Intravenosa / Intracoronária",
+        mecanismo: "Transfecção via AAV da bomba de cálcio SERCA2a no retículo sarcoplasmático cardíaco para resgatar a cinética de Ca²⁺ e prevenir insuficiência cardíaca.",
+        paises: "EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Baseada em RNA / mRNA",
+        subcategoria: "mRNA em Vesículas Extracelulares",
+        nome: "SPOT-mRNA03",
+        status: "Fase 1 Inicial",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "mRNA da distrofina de comprimento total encapsulado em vesículas extracelulares (EVs) decoradas com peptídeos de direcionamento muscular.",
+        paises: "China"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Baseada em RNA / mRNA",
+        subcategoria: "RNA de Ativação Pequeno (saRNA)",
+        nome: "RAG-18",
+        status: "Fase 1 Inicial",
+        entrega: "Infusão Intravenosa (IV) / Subcutânea",
+        mecanismo: "Pequeno RNA de ativação (saRNA) que atua epigeneticamente estimulando a transcrição e suprarregulação da utrofina endógena.",
+        paises: "China, Austrália"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Conjugado Anticorpo-Oligonucleotídeo (AOC) - Éxon 51",
+        nome: "DYNE-251 (z-rostudirsen)",
+        status: "Fase 3",
+        entrega: "Infusão Intravenosa (IV) mensal",
+        mecanismo: "Oligonucleotídeo antisense (PMO) conjugado a um fragmento Fab anti-TfR1 para endocitose direcionada ao músculo e salto do éxon 51.",
+        paises: "EUA, Europa, Austrália"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Conjugado Anticorpo-Oligonucleotídeo (AOC) - Éxon 44",
+        nome: "AOC 1044",
+        status: "Fase 3",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Conjugado de anticorpo monoclonal anti-TfR1 ligado a um oligonucleotídeo antisense para direcionamento muscular e salto do éxon 44.",
+        paises: "EUA, Europa"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Oligonucleotídeo Estereoespecífico - Éxon 53",
+        nome: "WVE-N531",
+        status: "Fase 2",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Oligonucleotídeo antisense sintético estereoespecífico (química PN) com alta penetração celular sem necessidade de conjugado (salto do éxon 53).",
+        paises: "Reino Unido, EUA, Europa"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Peptídeo de Entrada Endossomal (EEP) - Éxons 44 e 45",
+        nome: "ENTR-601-44 / ENTR-601-45",
+        status: "Fase 1/2",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "PMO conjugado a peptídeos cíclicos que facilitam a fuga endossomal para salto dos éxons 44 e 45, respectivamente.",
+        paises: "EUA, Reino Unido"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Modificação Química de Morfolino - Éxon 44",
+        nome: "Brogidirsen (NS-089 / NCNP-02)",
+        status: "Fase 2",
+        entrega: "Infusão Intravenosa (IV) semanal",
+        mecanismo: "Oligonucleotídeo antisense modificado para o salto do éxon 44 do gene da distrofina.",
+        paises: "Japão, EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Química Avançada (ASO Otimizado) - Éxon 51",
+        nome: "BMN 351 / LE051",
+        status: "Fase 2 (BMN 351) / Fase 1 (LE051)",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "ASOs de nova geração desenhados para o salto eficiente do éxon 51 com alta afinidade muscular.",
+        paises: "EUA, Europa, Japão, China"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Exon Skipping (Nova Geração)",
+        subcategoria: "Salto do Éxon 50",
+        nome: "NS-050 / NCNP-03 (Meteor50)",
+        status: "Fase 1/2",
+        entrega: "Infusão Intravenosa (IV) semanal",
+        mecanismo: "Oligonucleotídeo morfolino (PMO) desenhado especificamente para promover a exclusão do éxon 50 do gene da distrofina.",
+        paises: "Japão, EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Edição Gênica",
+        subcategoria: "Nuclease ARCUS (Hotspot Éxons 45–55)",
+        nome: "PBGENE-DMD",
+        status: "Fase 1/2",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Nuclease editada por engenharia proteica (ARCUS) veiculada por AAV para excisão genômica permanente do hot-spot mutacional (éxons 45–55).",
+        paises: "EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Edição Gênica",
+        subcategoria: "Base Editing (CRISPR / Cas) e Clivagem Direcionada",
+        nome: "GEN6050X / HG302",
+        status: "Fase 1",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Edição de bases de citosina guiada por CRISPR para salto permanente do éxon 50 (GEN6050X) e nuclease CRISPR para correção do quadro de leitura (HG302).",
+        paises: "China"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Celular e Regenerativa",
+        subcategoria: "Cardiosferas / Exossomos Alogênicos",
+        nome: "CAP-1002 (Deramiocel)",
+        status: "Fase 3 (HOPE-3)",
+        entrega: "Infusão Intravenosa (IV) trimestral",
+        mecanismo: "Células progenitoras derivadas de cardiosferas que secretam exossomos com microRNAs antifibróticos e imunomoduladores; preservam função cardíaca e motora.",
+        paises: "EUA"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Terapia Celular e Regenerativa",
+        subcategoria: "Mioblastos Quiméricos, Progenitores iPSC e MSCs",
+        nome: "DT-DEC01 / MyoPAXon / EN001 / UC-MSC",
+        status: "Fases 1 e 1/2",
+        entrega: "Intra-arterial / Intramuscular / IV",
+        mecanismo: "Células quiméricas fundidas expressando distrofina (DT-DEC01), progenitores derivados de iPSC (MyoPAXon) e células-tronco mesenquimais antifibróticas (EN001, UC-MSC).",
+        paises: "Polônia, EUA, Coreia do Sul, China, Índia"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Mecanobiologia e Regeneração Muscular",
+        subcategoria: "Inibidor da Miosina Rápida",
+        nome: "Sevasemten (EDG-5506)",
+        status: "Fase 2/3",
+        entrega: "Cápsula Oral diária",
+        mecanismo: "Inibidor alostérico seletivo da ATPase da miosina das fibras musculares rápidas; desacopla a hipercontração mecânica que rompe o sarcolema vulnerável.",
+        paises: "EUA, Europa"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Mecanobiologia e Regeneração Muscular",
+        subcategoria: "Modulador de Polaridade de Células Satélites",
+        nome: "SAT-3247 (Forazapadin)",
+        status: "Fase 2",
+        entrega: "Via Oral diária",
+        mecanismo: "Modulador da sinalização de polaridade de células satélites musculares, restaurando a divisão assimétrica para reabastecer mioblastos funcionais.",
+        paises: "Canadá, EUA, Austrália"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Hipertrofia Muscular / Inibição de Miostatina",
+        subcategoria: "Armadilha de Ligante ActRIIA/B e Anticorpos Anti-Miostatina",
+        nome: "KER-065 / Apitegromab / Taldefgrobep alfa",
+        status: "Fase 1 e Fase 2",
+        entrega: "Injeção Subcutânea / IV",
+        mecanismo: "Inibição seletiva de miostatina e activinas preservando BMP9, promovendo ganho de massa muscular e densidade óssea.",
+        paises: "EUA, Europa"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Anti-inflamatórios, Antifibróticos e Modulação Hormonal",
+        subcategoria: "Modulador Seletivo (SEGRAM), Anti-CD49d e SERM",
+        nome: "Tegacorat (GRM-01) / ATL1102 / Tamoxifeno",
+        status: "Fase 2 e Fase 3",
+        entrega: "Via Oral / Subcutânea semanal",
+        mecanismo: "Modulador não-esteroidal do receptor de glicocorticoide (Tegacorat), ASO bloqueador da migração de linfócitos T via CD49d (ATL1102) e modulador do receptor de estrogênio (Tamoxifeno).",
+        paises: "EUA, Europa, Austrália"
+      },
+      {
+        grupo: "em-teste",
+        categoria: "Cardioproteção e Bioenergética em Investigação",
+        subcategoria: "Estabilizadores de Rianodina (Rycals), iSGLT2 e Peptídeos Mitocondriais",
+        nome: "ARM210 (S48168) / Dapagliflozina / Empagliflozina / Carmoterol / TT-P34 / SS-31",
+        status: "Fases 1, 2 e 2/3",
+        entrega: "Via Oral / Subcutânea",
+        mecanismo: "Estabilização do canal RyR1/RyR2 impedindo vazamento de cálcio (ARM210), proteção bioenergética cardíaca (iSGLT2) e reparo da cadeia respiratória mitocondrial (TT-P34, SS-31).",
+        paises: "EUA, Europa, França, Dinamarca"
+      },
+
+      // ==================== 3. FASE PRÉ-CLÍNICA ====================
+      {
+        grupo: "pre-clinica",
+        categoria: "Terapia Gênica Pré-Clínica",
+        subcategoria: "Vetores Cardiotrópicos Seletivos",
+        nome: "AAV Promotor Cardíaco (cTnT / MLC-2v)",
+        status: "Pré-clínico",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Vetores de microdistrofina guiados por promotores restritos ao miocárdio para proteção seletiva do coração sem sobrecarga hepática.",
+        paises: "Estudos globais"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Terapia Gênica Pré-Clínica",
+        subcategoria: "Mini/Micro-Utrofina Viral",
+        nome: "AAV-Utrofina",
+        status: "Pré-clínico",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Entrega de versão funcional da utrofina por AAV; atua como análogo funcional da distrofina sem resposta imune contra o transgene.",
+        paises: "EUA, Reino Unido"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Edição Gênica Pré-Clínica",
+        subcategoria: "CRISPR / AAV Duplo (Micro-homologia)",
+        nome: "CRISPR Dual AAV",
+        status: "Pré-clínico",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Sistemas de corte pareado para deleção de grandes regiões mutadas via junção terminal mediada por micro-homologia (MMEJ) ou NHEJ.",
+        paises: "EUA, Europa, China"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Estabilizadores de Membrana / Selantes",
+        subcategoria: "Polímero em Escova Sintético",
+        nome: "Bottlebrush Macromolecules (Elymers)",
+        status: "Pré-clínico",
+        entrega: "Injeção Intravenosa (IV) / Sistêmica",
+        mecanismo: "Copolímeros macroestruturados tipo escova que se ligam biofisicamente ao sarcolema, selando microfissuras e prevenindo entrada maciça de Ca²⁺ extracelular.",
+        paises: "EUA (Univ. de Minnesota / Elymus)"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Estabilizadores de Membrana / Selantes",
+        subcategoria: "Copolímero Tri-bloco",
+        nome: "Poloxamer 188 (P188)",
+        status: "Pré-clínico / Exploratório",
+        entrega: "Infusão Intravenosa (IV)",
+        mecanismo: "Surfactante não-iônico biocompatível que se insere nas rupturas hidrofóbicas da bicamada lipídica lesada de miócitos e cardiomiócitos, agindo como curativo molecular.",
+        paises: "EUA, Europa"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Regeneração Muscular e Utrofina",
+        subcategoria: "Inibidor de Tirosina Fosfatase (PTPN1/PTPN2)",
+        nome: "K884",
+        status: "Pré-clínico",
+        entrega: "Experimental (molécula pequena)",
+        mecanismo: "Inibe as fosfatases PTPN1 e PTPN2, ativando a via JAK/STAT3 necessária para a diferenciação e reparo miogênico das células-tronco satélites distróficas.",
+        paises: "Canadá, EUA"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Regeneração Muscular e Utrofina",
+        subcategoria: "Modulador de Promotor de Utrofina (2ª Geração)",
+        nome: "Derivados de Ezutromid (SMT C1100)",
+        status: "Pré-clínico",
+        entrega: "Via Oral",
+        mecanismo: "Induz a ativação transcricional do promotor do gene da utrofina para redistribuição contínua da utrofina ao longo da membrana muscular.",
+        paises: "Reino Unido, EUA"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Anti-inflamatórios, Antifibróticos e Modulação Hormonal",
+        subcategoria: "Inibidor de Mastócitos / TGF-β e Inibidor de ACLY / Smad",
+        nome: "Tranilast / ARC-18 / z-endoxifen",
+        status: "Pré-clínico",
+        entrega: "Via Oral / Sistêmica",
+        mecanismo: "Bloqueio da sinalização fibrótica TGF-β (Tranilast), inibição da ATP-citrato liase e Smad2/3 (ARC-18) e modulação ativa do receptor de estrogênio (z-endoxifen).",
+        paises: "Japão, EUA, China"
+      },
+      {
+        grupo: "pre-clinica",
+        categoria: "Cardioproteção / Canais Iônicos e Inflamassoma",
+        subcategoria: "Bloqueadores Mecanossensíveis (TRPC3/6) e Inibidor NLRP3",
+        nome: "GSK2332255 / SAR7334 / MCC950",
+        status: "Pré-clínico",
+        entrega: "Experimental",
+        mecanismo: "Bloqueiam canais mecanossensíveis hiperativos impedindo entrada tóxica de Ca²⁺ no coração (TRPC3/6) e inibem a montagem do inflamassoma NLRP3 cardíaco (MCC950).",
+        paises: "EUA, Europa, Austrália"
+      }
+    ];
+
+    const configFases = {
+      "aprovadas": {
+        titulo: "Terapias Aprovadas",
+        subtitulo: "Medicamentos e diretrizes já aprovados por agências regulatórias ou estabelecidos no cuidado padrão da DMD.",
+        corDestaque: "#10653A",
+        badgeClasse: "bg-[#10653A] text-white"
+      },
+      "em-teste": {
+        titulo: "Terapias em Teste (Fases Clínicas 1, 2 e 3)",
+        subtitulo: "Fármacos, terapias gênicas, celulares e de salto de éxon atualmente em ensaios clínicos com pacientes.",
+        corDestaque: "#F3BA19",
+        badgeClasse: "bg-[#F3BA19] text-zinc-950"
+      },
+      "pre-clinica": {
+        titulo: "Terapias em Fase Pré-Clínica",
+        subtitulo: "Pesquisas laboratoriais e translacionais preparando a próxima geração de tratamentos para a Distrofia Muscular de Duchenne.",
+        corDestaque: "#BD2831",
+        badgeClasse: "bg-[#BD2831] text-white"
+      }
+    };
+
+    function abrirTelaFase(faseId) {
+      document.getElementById('telaSelecao').classList.add('hidden');
+      document.getElementById('telaDetalhes').classList.remove('hidden');
+
+      // Atualizar estilo dos botões de abas no topo
+      ['aprovadas', 'em-teste', 'pre-clinica'].forEach(id => {
+        const btn = document.getElementById('btnTab-' + id);
+        if (id === faseId) {
+          btn.className = "text-xs font-bold px-4 py-2 rounded-xl transition bg-[#10653A] text-white shadow-sm";
+        } else {
+          btn.className = "text-xs font-bold px-4 py-2 rounded-xl transition bg-stone-100 text-[#1E3A2B] hover:bg-stone-200";
+        }
+      });
+
+      const cfg = configFases[faseId];
+      const listaDaFase = todasTerapias.filter(t => t.grupo === faseId);
+
+      // Agrupar por Categoria
+      const categoriasMap = {};
+      listaDaFase.forEach(item => {
+        if (!categoriasMap[item.categoria]) {
+          categoriasMap[item.categoria] = [];
+        }
+        categoriasMap[item.categoria].push(item);
+      });
+
+      // Renderizar cabeçalho da fase
+      document.getElementById('cabecalhoFase').innerHTML = `
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full ${cfg.badgeClasse}">
+              ${Object.keys(categoriasMap).length} Categorias • ${listaDaFase.length} Terapias Mapeadas
+            </span>
+            <h2 class="text-2xl md:text-4xl font-bold text-[#10653A] pt-2">${cfg.titulo}</h2>
+            <p class="text-sm md:text-base text-[#2C3E35]/80">${cfg.subtitulo}</p>
+          </div>
+        </div>
+      `;
+
+      // Renderizar cada Categoria e suas Janelas de Terapia
+      const container = document.getElementById('containerCategorias');
+      let html = '';
+
+      Object.keys(categoriasMap).forEach(nomeCategoria => {
+        const itens = categoriasMap[nomeCategoria];
+        // Extrair subdivisões únicas dessa categoria para mostrar ao passar o mouse na categoria
+        const subdivisoesUnicas = [...new Set(itens.map(i => i.subcategoria))];
+
+        html += `
+          <section class="bloco-categoria bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15 space-y-5">
+            
+            <!-- Cabeçalho da Categoria + Subdivisões visíveis e destacadas no hover -->
+            <div class="border-b border-stone-200 pb-4 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-xl md:text-2xl font-bold text-[#10653A] flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full" style="background-color: ${cfg.corDestaque}"></span>
+                  Categoria: ${nomeCategoria}
+                </h3>
+                <span class="text-xs font-bold text-stone-500">${itens.length} ${itens.length === 1 ? 'terapia' : 'terapias'}</span>
+              </div>
+
+              <!-- Subdivisões da Categoria -->
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#BD2831]">Subdivisões:</span>
+                ${subdivisoesUnicas.map(sub => `
+                  <span class="subcategorias-pill text-xs font-semibold bg-[#F6F6EA] border border-[#10653A]/20 text-[#10653A] px-3 py-1 rounded-full">
+                    ${sub}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Grade de Janelas de cada Terapia -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              ${itens.map(t => `
+                <div tabindex="0" class="card-terapia group bg-[#F6F6EA]/60 hover:bg-white rounded-2xl p-5 border-2 border-transparent hover:border-[#10653A] shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer outline-none">
+                  
+                  <!-- Topo sempre visível -->
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <span class="inline-block text-[11px] font-bold uppercase tracking-wider text-[#BD2831] bg-[#BD2831]/10 px-2.5 py-0.5 rounded-md mb-1.5">
+                        Subdivisão: ${t.subcategoria}
+                      </span>
+                      <h4 class="text-lg font-bold text-[#10653A] group-hover:text-[#BD2831] transition">
+                        ${t.nome}
+                      </h4>
+                    </div>
+                    <span class="text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0 ${cfg.badgeClasse}">
+                      ${t.status}
+                    </span>
+                  </div>
+
+                  <div class="mt-2 flex items-center justify-between text-xs text-stone-500 group-hover:hidden">
+                    <span>Passe o mouse para ver detalhes e subdivisão</span>
+                    <span class="font-bold text-[#10653A]">▼</span>
+                  </div>
+
+                  <!-- Detalhes que abrem ao passar o mouse (Hover) -->
+                  <div class="detalhe-hover border-t border-stone-200/80 pt-3 space-y-2.5 text-xs text-[#1E3A2B]">
+                    <p class="leading-relaxed">
+                      <strong class="text-[#10653A]">Mecanismo de Ação:</strong> ${t.mecanismo}
+                    </p>
+                    <div class="flex flex-wrap justify-between gap-2 pt-1 text-[11px] font-semibold text-stone-600">
+                      <span class="bg-stone-200/70 px-2.5 py-1 rounded-lg"><strong>Forma de Entrega:</strong> ${t.entrega}</span>
+                      <span class="bg-stone-200/70 px-2.5 py-1 rounded-lg"><strong>País(es):</strong> ${t.paises}</span>
+                    </div>
+                  </div>
+
+                </div>
+              `).join('')}
+            </div>
+
+          </section>
+        `;
+      });
+
+      container.innerHTML = html;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function voltarMenuPrincipal() {
+      document.getElementById('telaDetalhes').classList.add('hidden');
+      document.getElementById('telaSelecao').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
