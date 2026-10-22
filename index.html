@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Associação Duchenne Brasil - Mais que um símbolo, um propósito</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Fontes do Google para combinar com a identidade visual das artes -->
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -29,7 +28,7 @@
 </head>
 <body class="min-h-screen flex flex-col selection:bg-[#10653A] selection:text-white">
 
-  <!-- Barra Superior Decorativa com as 3 cores da marca -->
+  <!-- Barra Superior Decorativa -->
   <div class="h-2 w-full bg-gradient-to-r from-[#10653A] via-[#F3BA19] to-[#BD2831]"></div>
 
   <!-- Cabeçalho / Menu -->
@@ -39,7 +38,7 @@
         <img src="LOGO.png" alt="Logo Duchenne Brasil" class="h-16 w-auto object-contain">
       </a>
       
-     <nav class="flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-[#10653A]">
+      <nav class="flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-[#10653A]">
         <a href="#sobre" class="hover:text-[#BD2831] transition">A Associação</a>
         <a href="#identidade" class="hover:text-[#BD2831] transition">Nosso Símbolo</a>
         <a href="#pilares" class="hover:text-[#BD2831] transition">Atuação</a>
@@ -58,7 +57,6 @@
 
   <!-- Seção Principal (Hero) -->
   <section class="relative overflow-hidden py-12 md:py-20 px-4">
-    <!-- Detalhe decorativo inspirado nas curvas das artes -->
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
       
       <div class="space-y-6 text-center md:text-left">
@@ -89,7 +87,7 @@
         </div>
       </div>
 
-      <!-- Imagem Principal "Mais que um propósito" -->
+      <!-- Imagem Principal -->
       <div class="flex justify-center">
         <div class="relative bg-white p-3 rounded-3xl shadow-xl border-2 border-[#F3BA19]/40 max-w-md w-full">
           <img 
@@ -117,7 +115,7 @@
     </div>
   </section>
 
-  <!-- Seção: Galeria e Significado das Cores e Símbolos -->
+  <!-- Seção: Galeria e Significado das Cores e Símbolos (ALINHAMENTO CORRIGIDO) -->
   <section id="identidade" class="py-14 px-4">
     <div class="max-w-6xl mx-auto space-y-10">
       
@@ -129,54 +127,54 @@
         </p>
       </div>
 
-      <!-- Grade com os 4 cartões das imagens enviadas ao GitHub -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Grade com proporção de imagem padronizada (aspect-[4/5]) para alinhar todos os textos -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
         
         <!-- Card 1: O Sol -->
         <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#F3BA19] flex flex-col hover:-translate-y-1 transition duration-300">
-          <img src="O SOL.png" onerror="this.src='O SOL.jpg'" alt="O Sol - Esperança e Futuro" class="w-full h-auto object-cover">
-          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
-            <div>
-              <h3 class="font-bold text-lg text-[#10653A]">O Sol</h3>
-              <p class="text-xs font-semibold text-[#F3BA19] uppercase tracking-wider mb-2">Esperança e Futuro</p>
-              <p class="text-sm text-[#2C3E35]/80">Luz que guia, aquece e inspira, simbolizando a busca por mais qualidade de vida.</p>
-            </div>
+          <div class="w-full aspect-[4/5] overflow-hidden bg-[#F6F6EA]">
+            <img src="O SOL.png" onerror="this.src='O SOL.jpg'" alt="O Sol - Esperança e Futuro" class="w-full h-full object-cover object-top">
+          </div>
+          <div class="p-5 flex-1 flex flex-col bg-white">
+            <h3 class="font-bold text-lg text-[#10653A]">O Sol</h3>
+            <p class="text-xs font-semibold text-[#F3BA19] uppercase tracking-wider mb-2">Esperança e Futuro</p>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">Luz que guia, aquece e inspira, simbolizando a busca por mais qualidade de vida.</p>
           </div>
         </div>
 
         <!-- Card 2: O Círculo -->
         <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#10653A] flex flex-col hover:-translate-y-1 transition duration-300">
-          <img src="O CIRCULO.png" onerror="this.src='O CIRCULO.jpg'" alt="O Círculo - União e Proteção" class="w-full h-auto object-cover">
-          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
-            <div>
-              <h3 class="font-bold text-lg text-[#10653A]">O Círculo</h3>
-              <p class="text-xs font-semibold text-[#10653A] uppercase tracking-wider mb-2">União e Proteção</p>
-              <p class="text-sm text-[#2C3E35]/80">Acolhimento, união e pertencimento em uma comunidade conectada que une famílias e especialistas.</p>
-            </div>
+          <div class="w-full aspect-[4/5] overflow-hidden bg-[#F6F6EA]">
+            <img src="O CIRCULO.png" onerror="this.src='O CIRCULO.jpg'" alt="O Círculo - União e Proteção" class="w-full h-full object-cover object-top">
+          </div>
+          <div class="p-5 flex-1 flex flex-col bg-white">
+            <h3 class="font-bold text-lg text-[#10653A]">O Círculo</h3>
+            <p class="text-xs font-semibold text-[#10653A] uppercase tracking-wider mb-2">União e Proteção</p>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">Acolhimento, união e pertencimento em uma comunidade conectada que une famílias e especialistas.</p>
           </div>
         </div>
 
         <!-- Card 3: O Vermelho -->
         <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#BD2831] flex flex-col hover:-translate-y-1 transition duration-300">
-          <img src="O VERMELHO.png" onerror="this.src='O VERMELHO.jpg'" alt="O Vermelho - Força e Protagonismo" class="w-full h-auto object-cover">
-          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
-            <div>
-              <h3 class="font-bold text-lg text-[#BD2831]">O Vermelho</h3>
-              <p class="text-xs font-semibold text-[#BD2831] uppercase tracking-wider mb-2">Força e Protagonismo</p>
-              <p class="text-sm text-[#2C3E35]/80">A cor internacional Duchenne. Representa movimento, coragem e a determinação de quem não desiste.</p>
-            </div>
+          <div class="w-full aspect-[4/5] overflow-hidden bg-[#F6F6EA]">
+            <img src="O VERMELHO.png" onerror="this.src='O VERMELHO.jpg'" alt="O Vermelho - Força e Protagonismo" class="w-full h-full object-cover object-top">
+          </div>
+          <div class="p-5 flex-1 flex flex-col bg-white">
+            <h3 class="font-bold text-lg text-[#BD2831]">O Vermelho</h3>
+            <p class="text-xs font-semibold text-[#BD2831] uppercase tracking-wider mb-2">Força e Protagonismo</p>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">A cor internacional Duchenne. Representa movimento, coragem e a determinação de quem não desiste.</p>
           </div>
         </div>
 
         <!-- Card 4: A Cor Verde -->
         <div class="bg-white rounded-2xl overflow-hidden shadow-md border-t-4 border-[#10653A] flex flex-col hover:-translate-y-1 transition duration-300">
-          <img src="A COR VERDE.png" onerror="this.src='A COR VERDE.jpg'" alt="A Cor Verde - Vida e Esperança" class="w-full h-auto object-cover">
-          <div class="p-5 flex-1 flex flex-col justify-between bg-white">
-            <div>
-              <h3 class="font-bold text-lg text-[#10653A]">A Cor Verde</h3>
-              <p class="text-xs font-semibold text-[#10653A] uppercase tracking-wider mb-2">Vida e Esperança</p>
-              <p class="text-sm text-[#2C3E35]/80">Representa saúde, equilíbrio, bem-estar e a força da união para construir o amanhã.</p>
-            </div>
+          <div class="w-full aspect-[4/5] overflow-hidden bg-[#F6F6EA]">
+            <img src="A COR VERDE.png" onerror="this.src='A COR VERDE.jpg'" alt="A Cor Verde - Vida e Esperança" class="w-full h-full object-cover object-top">
+          </div>
+          <div class="p-5 flex-1 flex flex-col bg-white">
+            <h3 class="font-bold text-lg text-[#10653A]">A Cor Verde</h3>
+            <p class="text-xs font-semibold text-[#10653A] uppercase tracking-wider mb-2">Vida e Esperança</p>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">Representa saúde, equilíbrio, bem-estar e a força da união para construir o amanhã.</p>
           </div>
         </div>
 
@@ -224,7 +222,7 @@
     </div>
   </section>
 
-  <!-- Formulário de Contato / Pré-Cadastro -->
+  <!-- Formulário de Contato / Pré-Cadastro Seguro -->
   <section id="contato" class="py-14 px-4">
     <div class="max-w-3xl mx-auto bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-[#10653A]/15">
       <div class="text-center mb-8">
@@ -235,42 +233,48 @@
         </p>
       </div>
 
-      <form class="space-y-5">
+      <form id="formPreCadastro" class="space-y-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-semibold text-[#10653A] mb-1">Nome Completo</label>
-            <input type="text" placeholder="Digite seu nome" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+            <label class="block text-sm font-semibold text-[#10653A] mb-1">Nome Completo *</label>
+            <input type="text" id="cadNome" required placeholder="Digite seu nome" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-[#10653A] mb-1">E-mail ou WhatsApp</label>
-            <input type="text" placeholder="(DDD) 99999-9999 ou e-mail" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+            <label class="block text-sm font-semibold text-[#10653A] mb-1">E-mail ou WhatsApp *</label>
+            <input type="text" id="cadContato" required placeholder="(DDD) 99999-9999 ou e-mail" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-semibold text-[#10653A] mb-1">Cidade / Estado</label>
-            <input type="text" placeholder="Ex: Maringá - PR" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+            <input type="text" id="cadCidade" placeholder="Ex: Maringá - PR" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
           </div>
           <div>
             <label class="block text-sm font-semibold text-[#10653A] mb-1">Seu Perfil</label>
-            <select class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
-              <option>Familiar / Cuidador</option>
-              <option>Pessoa com Duchenne</option>
-              <option>Profissional de Saúde / Pesquisador</option>
-              <option>Apoiador / Voluntário</option>
+            <select id="cadPerfil" class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40">
+              <option value="Familiar / Cuidador">Familiar / Cuidador</option>
+              <option value="Pessoa com Duchenne">Pessoa com Duchenne</option>
+              <option value="Profissional de Saúde / Pesquisador">Profissional de Saúde / Pesquisador</option>
+              <option value="Apoiador / Voluntário">Apoiador / Voluntário</option>
             </select>
           </div>
         </div>
 
         <div>
           <label class="block text-sm font-semibold text-[#10653A] mb-1">Mensagem</label>
-          <textarea rows="3" placeholder="Conte um pouco sobre como podemos acolher ou ajudar você..." class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40"></textarea>
+          <textarea id="cadMensagem" rows="3" placeholder="Conte um pouco sobre como podemos acolher ou ajudar você..." class="w-full border border-stone-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#10653A] bg-[#F6F6EA]/40"></textarea>
         </div>
 
-        <button type="button" onclick="alert('Obrigado pelo contato! Em breve conectaremos este formulário ao banco de dados da Associação Duchenne Brasil.')" class="w-full bg-[#10653A] hover:bg-[#0b4929] text-white font-bold py-3.5 rounded-xl transition shadow-md text-base">
+        <p class="text-xs text-stone-500 leading-relaxed">
+          🔒 Seus dados são protegidos e utilizados exclusivamente pela Associação Duchenne Brasil para contato institucional e acolhimento, em conformidade com a LGPD.
+        </p>
+
+        <button type="submit" id="btnEnviar" class="w-full bg-[#10653A] hover:bg-[#0b4929] text-white font-bold py-3.5 rounded-xl transition shadow-md text-base">
           Enviar Cadastro
         </button>
+
+        <div id="statusEnvio" class="hidden p-4 rounded-xl text-sm font-semibold text-center"></div>
       </form>
     </div>
   </section>
@@ -288,7 +292,6 @@
         </div>
       </div>
 
-      <!-- Link do Instagram conforme consta na imagem -->
       <div class="flex items-center gap-3">
         <a href="https://instagram.com/duchennebrasil" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-medium transition">
           <svg class="w-5 h-5 text-[#F3BA19]" fill="currentColor" viewBox="0 0 24 24">
@@ -303,6 +306,59 @@
       &copy; 2026 Associação Duchenne Brasil - Todos os direitos reservados. “Juntos somos mais fortes.”
     </div>
   </footer>
+
+  <!-- Script de Envio Seguro para o Supabase -->
+  <script>
+    // COLE AQUI A URL E A CHAVE ANON DO SEU PROJETO SUPABASE:
+    const SUPABASE_URL = "COLE_SUA_PROJECT_URL_AQUI";
+    const SUPABASE_ANON_KEY = "COLE_SUA_ANON_KEY_AQUI";
+
+    const form = document.getElementById('formPreCadastro');
+    const statusDiv = document.getElementById('statusEnvio');
+    const btnEnviar = document.getElementById('btnEnviar');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = "Enviando...";
+      statusDiv.classList.add('hidden');
+
+      const payload = {
+        nome: document.getElementById('cadNome').value.trim(),
+        contato: document.getElementById('cadContato').value.trim(),
+        cidade: document.getElementById('cadCidade').value.trim(),
+        perfil: document.getElementById('cadPerfil').value,
+        mensagem: document.getElementById('cadMensagem').value.trim()
+      };
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/pre_cadastros`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          statusDiv.className = "p-4 rounded-xl text-sm font-semibold text-center bg-emerald-100 text-[#10653A]";
+          statusDiv.textContent = "✅ Pré-cadastro enviado com sucesso! Em breve nossa equipe entrará em contato.";
+          form.reset();
+        } else {
+          throw new Error("Erro ao salvar no banco.");
+        }
+      } catch (err) {
+        statusDiv.className = "p-4 rounded-xl text-sm font-semibold text-center bg-red-100 text-[#BD2831]";
+        statusDiv.textContent = "⚠️ O banco de dados ainda está sendo conectado. Por favor, fale conosco também pelo Instagram @duchennebrasil.";
+      } finally {
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = "Enviar Cadastro";
+      }
+    });
+  </script>
 
 </body>
 </html>
