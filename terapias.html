@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terapias e Tratamentos - Associação Duchenne Brasil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Biblioteca SheetJS para ler a planilha (.ods, .xlsx, .csv) diretamente do repositório GitHub -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cor-amarelo: #F3BA19;
+      --cor-vermelho: #BD2831;
+      --cor-verde: #10653A;
+      --cor-fundo: #F6F6EA;
+      --cor-texto: #1E3A2B;
+    }
+    body {
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .fonte-manuscrita {
+      font-family: 'Caveat', cursive;
+    }
+
+    /* Animação fluida para o acordeão da categoria */
+    .conteudo-categoria {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s ease-out, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .conteudo-categoria.aberto {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .conteudo-categoria-inner {
+      overflow: hidden;
+    }
+
+    /* Rotação da seta indicadora */
+    .icone-chevron {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .icone-chevron.rotacionado {
+      transform: rotate(180deg);
+    }
+
+    /* Detalhes de cada janela de medicamento */
+    .card-terapia .detalhe-hover {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    }
+    .card-terapia:hover .detalhe-hover,
+    .card-terapia:focus-within .detalhe-hover {
+      max-height: 360px;
+      opacity: 1;
+      margin-top: 0.75rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Barra Superior Decorativa -->
+  <div class="h-2 w-full bg-gradient-to-r from-[#10653A] via-[#F3BA19] to-[#BD2831]"></div>
+
+  <!-- Cabeçalho / Menu -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-[#10653A]/10 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="LOGO.png" alt="Logo Duchenne Brasil" class="h-14 w-auto object-contain">
+      </a>
+      <nav class="flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-[#10653A]">
+        <a href="index.html" class="hover:text-[#BD2831] transition">← Início</a>
+        <a href="terapias.html" onclick="voltarMenuPrincipal(); return false;" class="text-[#BD2831] font-bold underline decoration-[#F3BA19] decoration-2 underline-offset-4">
+          Terapias/Tratamento
+        </a>
+        <a href="analise-exon.html" class="bg-[#F3BA19] hover:bg-[#dca510] text-[#1E3A2B] font-bold px-4 py-2 rounded-full transition shadow-sm">
+          🧬 Simulador de Éxons
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10 flex-1 w-full">
+
+    <!-- Indicador de Carregamento / Status do Arquivo -->
+    <div id="statusCarregamento" class="hidden mb-6 p-4 rounded-2xl text-center text-sm font-semibold bg-white border border-[#10653A]/20 shadow-sm"></div>
+
+    <!-- ========================================================= -->
+    <!-- TELA 1: AS 3 JANELAS CLICÁVEIS PRINCIPAIS                  -->
+    <!-- ========================================================= -->
+    <div id="telaSelecao" class="space-y-10">
+      <div class="text-center space-y-3">
+        <span class="bg-[#10653A]/10 text-[#10653A] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+          Panorama Científico • Duchenne Brasil
+        </span>
+        <h1 class="text-3xl md:text-5xl font-bold text-[#10653A]">
+          Terapias e <span class="fonte-manuscrita text-5xl md:text-6xl text-[#BD2831]">Tratamentos</span>
+        </h1>
+        <p class="text-sm md:text-base text-[#2C3E35]/85 max-w-2xl mx-auto leading-relaxed">
+          Selecione uma fase abaixo para visualizar as categorias. Ao clicar na categoria desejada, cada medicamento abrirá em sua própria janela individual.
+        </p>
+      </div>
+
+      <!-- As 3 Janelas Principais -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
+
+        <!-- Janela 1: Terapias Aprovadas -->
+        <button onclick="abrirTelaFase('aprovadas')" class="group text-left bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl border-2 border-[#10653A]/20 hover:border-[#10653A] transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-3 bg-[#10653A]"></div>
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-[#10653A]/10 text-[#10653A] flex items-center justify-center text-2xl font-bold group-hover:bg-[#10653A] group-hover:text-white transition">
+                ✓
+              </div>
+              <span id="contador-aprovadas" class="text-xs font-bold bg-[#10653A]/10 text-[#10653A] px-3 py-1 rounded-full">
+                Carregando...
+              </span>
+            </div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#10653A] bg-[#10653A]/10 px-3 py-1 rounded-full">
+              Uso Clínico / Comercial
+            </span>
+            <h2 class="text-2xl font-bold text-[#10653A]">Terapias Aprovadas</h2>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+              Medicamentos, terapias gênicas, saltos de éxon, corticoides, reguladores epigenéticos e cardioprotetores já aprovados por agências regulatórias ou diretrizes clínicas.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-bold text-[#10653A]">
+            <span>Explorar categorias aprovadas</span>
+            <span class="group-hover:translate-x-1.5 transition">→</span>
+          </div>
+        </button>
+
+        <!-- Janela 2: Terapias em Teste -->
+        <button onclick="abrirTelaFase('em-teste')" class="group text-left bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl border-2 border-[#F3BA19]/40 hover:border-[#F3BA19] transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-3 bg-[#F3BA19]"></div>
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-[#F3BA19]/20 text-[#1E3A2B] flex items-center justify-center text-2xl font-bold group-hover:bg-[#F3BA19] transition">
+                🔬
+              </div>
+              <span id="contador-em-teste" class="text-xs font-bold bg-[#F3BA19]/25 text-amber-900 px-3 py-1 rounded-full">
+                Carregando...
+              </span>
+            </div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-amber-900 bg-[#F3BA19]/25 px-3 py-1 rounded-full">
+              Ensaios Clínicos (Fases 1, 2 e 3)
+            </span>
+            <h2 class="text-2xl font-bold text-[#10653A]">Terapias em Teste</h2>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+              Terapias inovadoras em ensaios clínicos com humanos: nova geração de salto de éxon, microdistrofinas, edição gênica, terapias celulares e moduladores de homeostase muscular.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-bold text-[#10653A]">
+            <span>Explorar terapias em teste</span>
+            <span class="group-hover:translate-x-1.5 transition">→</span>
+          </div>
+        </button>
+
+        <!-- Janela 3: Terapias em Fase Pré-Clínica -->
+        <button onclick="abrirTelaFase('pre-clinica')" class="group text-left bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl border-2 border-[#BD2831]/20 hover:border-[#BD2831] transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-3 bg-[#BD2831]"></div>
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-[#BD2831]/10 text-[#BD2831] flex items-center justify-center text-2xl font-bold group-hover:bg-[#BD2831] group-hover:text-white transition">
+                🧪
+              </div>
+              <span id="contador-pre-clinica" class="text-xs font-bold bg-[#BD2831]/10 text-[#BD2831] px-3 py-1 rounded-full">
+                Carregando...
+              </span>
+            </div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#BD2831] bg-[#BD2831]/10 px-3 py-1 rounded-full">
+              Pesquisa Laboratorial e Translacional
+            </span>
+            <h2 class="text-2xl font-bold text-[#BD2831]">Terapias em Fase Pré-Clínica</h2>
+            <p class="text-sm text-[#2C3E35]/80 leading-relaxed">
+              Desenvolvimentos científicos laboratoriais: vetores cardiotrópicos, utrofina viral, selantes de membrana, bloqueadores de canais iônicos e novos moduladores antifibróticos.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-bold text-[#BD2831]">
+            <span>Explorar fase pré-clínica</span>
+            <span class="group-hover:translate-x-1.5 transition">→</span>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TELA 2: CATEGORIAS CLICÁVEIS E MEDICAMENTOS INDIVIDUAIS   -->
+    <!-- ========================================================= -->
+    <div id="telaDetalhes" class="hidden space-y-6">
+      
+      <!-- Navegação Superior -->
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-[#10653A]/10">
+        <button onclick="voltarMenuPrincipal()" class="inline-flex items-center gap-2 text-sm font-bold text-[#10653A] hover:text-[#BD2831] px-3 py-1.5 rounded-xl hover:bg-stone-100 transition">
+          ← Voltar para as 3 Janelas Principais
+        </button>
+
+        <div class="flex flex-wrap gap-2">
+          <button id="btnTab-aprovadas" onclick="abrirTelaFase('aprovadas')" class="text-xs font-bold px-4 py-2 rounded-xl transition">
+            ✓ Terapias Aprovadas
+          </button>
+          <button id="btnTab-em-teste" onclick="abrirTelaFase('em-teste')" class="text-xs font-bold px-4 py-2 rounded-xl transition">
+            🔬 Terapias em Teste
+          </button>
+          <button id="btnTab-pre-clinica" onclick="abrirTelaFase('pre-clinica')" class="text-xs font-bold px-4 py-2 rounded-xl transition">
+            🧪 Fase Pré-Clínica
+          </button>
+        </div>
+      </div>
+
+      <!-- Cabeçalho da Fase -->
+      <div id="cabecalhoFase" class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15"></div>
+
+      <!-- Dica Interativa -->
+      <div class="bg-[#F3BA19]/20 border-l-4 border-[#F3BA19] px-4 py-3 rounded-xl flex items-center justify-between text-xs md:text-sm text-[#1E3A2B]">
+        <span>👇 <strong>Instrução:</strong> Clique na categoria para abrir suas janelas de medicamentos individuais. Em cada janela de medicamento, passe o mouse (ou toque) para ler o mecanismo completo.</span>
+      </div>
+
+      <!-- Acordeões de Categoria -->
+      <div id="containerCategorias" class="space-y-4"></div>
+
+    </div>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-[#10653A] text-white py-8 px-4 text-center text-xs mt-12">
+    <p class="font-bold text-sm mb-1">Associação Duchenne Brasil</p>
+    <p class="text-white/75">Acolher • Conectar • Informar • Transformar — “Juntos somos mais fortes.”</p>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // CONFIGURAÇÃO DO ARQUIVO DE DADOS EXTERNO
+    // =========================================================================
+    // Nome do arquivo na mesma pasta do repositório GitHub / Vercel
+    const ARQUIVO_PLANILHA = 'medicamentos compilado.ods';
+
+    // Lista que será preenchida automaticamente a partir da planilha
+    let todasTerapias = [];
+    let dadosCarregados = false;
+
+    const configFases = {
+      "aprovadas": {
+        titulo: "Terapias Aprovadas",
+        subtitulo: "Medicamentos e diretrizes já aprovados por agências regulatórias ou estabelecidos no cuidado padrão da DMD.",
+        corDestaque: "#10653A",
+        badgeClasse: "bg-[#10653A] text-white"
+      },
+      "em-teste": {
+        titulo: "Terapias em Teste (Fases Clínicas 1, 2 e 3)",
+        subtitulo: "Fármacos, terapias gênicas, celulares e de salto de éxon atualmente em ensaios clínicos com pacientes.",
+        corDestaque: "#F3BA19",
+        badgeClasse: "bg-[#F3BA19] text-zinc-950"
+      },
+      "pre-clinica": {
+        titulo: "Terapias em Fase Pré-Clínica",
+        subtitulo: "Pesquisas laboratoriais e translacionais preparando a próxima geração de tratamentos para a Distrofia Muscular de Duchenne.",
+        corDestaque: "#BD2831",
+        badgeClasse: "bg-[#BD2831] text-white"
+      }
+    };
+
+    /**
+     * Classifica automaticamente o medicamento em uma das 3 janelas
+     * com base no texto da coluna "Fase Atual / Status" (ou "Grupo", se existir).
+     */
+    function identificarGrupo(status, grupoExplicito) {
+      if (grupoExplicito) {
+        const g = grupoExplicito.toLowerCase().trim();
+        if (g.includes('aprovad')) return 'aprovadas';
+        if (g.includes('teste') || g.includes('fase')) return 'em-teste';
+        if (g.includes('pre') || g.includes('pré')) return 'pre-clinica';
+      }
+
+      const s = (status || '').toLowerCase();
+
+      // 1. Aprovadas / Uso Clínico / Diretriz Clínica
+      if (
+        s.includes('aprovad') ||
+        s.includes('padrão clínico') ||
+        s.includes('diretriz clínica') ||
+        s.includes('uso clínico')
+      ) {
+        return 'aprovadas';
+      }
+
+      // 2. Em Teste (Fases 1, 2, 3)
+      if (
+        s.includes('fase 1') ||
+        s.includes('fase 2') ||
+        s.includes('fase 3') ||
+        s.includes('fases 1')
+      ) {
+        return 'em-teste';
+      }
+
+      // 3. Pré-Clínica
+      return 'pre-clinica';
+    }
+
+    /**
+     * Normaliza nomes de categorias semelhantes na planilha (ex: "Exon Skipping (PMO)")
+     * mantendo total liberdade para novas categorias adicionadas no futuro.
+     */
+    function normalizarCategoria(categoria) {
+      const cat = (categoria || '').trim();
+      if (/^exon skipping.*pmo/i.test(cat)) {
+        return 'Exon Skipping (Salto de Éxon - PMO)';
+      }
+      return cat || 'Outras Terapias';
+    }
+
+    /**
+     * Busca e lê o arquivo 'medicamentos compilado.ods' em tempo real.
+     * Usa cache: 'no-cache' + timestamp para garantir que atualizações no GitHub
+     * apareçam imediatamente no site sem depender de cache antigo do navegador.
+     */
+    async function carregarDadosPlanilha() {
+      const statusEl = document.getElementById('statusCarregamento');
+      try {
+        const url = `${encodeURI(ARQUIVO_PLANILHA)}?t=${new Date().getTime()}`;
+        const resposta = await fetch(url, { cache: 'no-cache' });
+
+        if (!resposta.ok) {
+          throw new Error(`Não foi possível encontrar o arquivo "${ARQUIVO_PLANILHA}" (HTTP ${resposta.status}).`);
+        }
+
+        const arrayBuffer = await resposta.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+
+        // Pega a primeira aba da planilha
+        const nomePrimeiraAba = workbook.SheetNames[0];
+        const planilha = workbook.Sheets[nomePrimeiraAba];
+
+        // Converte as linhas da planilha para objetos JSON
+        const linhas = XLSX.utils.sheet_to_json(planilha, { defval: '' });
+
+        todasTerapias = linhas
+          .map(linha => {
+            // Aceita variações sutis no nome do cabeçalho
+            const categoriaBruta = linha['Categoria'] || linha['categoria'] || '';
+            const subcategoria   = linha['Subcategoria'] || linha['subcategoria'] || '';
+            const nome           = linha['Terapia / Fármaco'] || linha['Terapia'] || linha['Fármaco'] || linha['Nome'] || '';
+            const status         = linha['Fase Atual / Status'] || linha['Status'] || linha['Fase Atual'] || '';
+            const entrega        = linha['Forma de Entrega'] || linha['Entrega'] || '';
+            const mecanismo      = linha['Mecanismo de Ação'] || linha['Mecanismo'] || '';
+            const paises         = linha['País(es) de Teste / Uso'] || linha['Países'] || linha['Paises'] || '';
+            const grupoExplicito = linha['Grupo'] || linha['grupo'] || '';
+
+            if (!nome.trim()) return null;
+
+            return {
+              grupo: identificarGrupo(status, grupoExplicito),
+              categoria: normalizarCategoria(categoriaBruta),
+              subcategoria: subcategoria.trim() || 'Geral',
+              nome: nome.trim(),
+              status: status.trim() || 'Em avaliação',
+              entrega: entrega.trim() || 'Não informada',
+              mecanismo: mecanismo.trim() || 'Não informado.',
+              paises: paises.trim() || 'Não informado'
+            };
+          })
+          .filter(Boolean);
+
+        dadosCarregados = true;
+        atualizarContadoresMenu();
+        statusEl.classList.add('hidden');
+
+      } catch (erro) {
+        console.error('Erro ao carregar a planilha:', erro);
+        statusEl.className = "mb-6 p-5 rounded-2xl text-left text-xs md:text-sm bg-[#BD2831]/10 text-[#BD2831] border border-[#BD2831]/30 shadow-sm space-y-2";
+        statusEl.innerHTML = `
+          <p class="font-bold text-base">⚠️ Não foi possível carregar "${ARQUIVO_PLANILHA}"</p>
+          <p>Certifique-se de que o arquivo <strong>${ARQUIVO_PLANILHA}</strong> está na mesma pasta que o <code>terapias.html</code> no GitHub/Vercel.</p>
+          <p class="text-[11px] opacity-80">Nota: Se estiver abrindo o arquivo direto do computador (<code>file://</code>), o navegador bloqueia a leitura por segurança. No GitHub Pages, Vercel ou servidor local (Live Server / Python HTTP), ele carrega automaticamente.</p>
+        `;
+        statusEl.classList.remove('hidden');
+      }
+    }
+
+    function atualizarContadoresMenu() {
+      ['aprovadas', 'em-teste', 'pre-clinica'].forEach(grupoId => {
+        const total = todasTerapias.filter(t => t.grupo === grupoId).length;
+        const el = document.getElementById(`contador-${grupoId}`);
+        if (el) {
+          el.textContent = `${total} ${total === 1 ? 'terapia' : 'terapias'}`;
+        }
+      });
+    }
+
+    function alternarCategoria(indice) {
+      const conteudo = document.getElementById(`cat-conteudo-${indice}`);
+      const icone = document.getElementById(`cat-icone-${indice}`);
+      const btn = document.getElementById(`cat-btn-${indice}`);
+
+      const estaAberto = conteudo.classList.contains('aberto');
+
+      if (estaAberto) {
+        conteudo.classList.remove('aberto');
+        icone.classList.remove('rotacionado');
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        conteudo.classList.add('aberto');
+        icone.classList.add('rotacionado');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    async function abrirTelaFase(faseId) {
+      if (!dadosCarregados) {
+        await carregarDadosPlanilha();
+      }
+
+      document.getElementById('telaSelecao').classList.add('hidden');
+      document.getElementById('telaDetalhes').classList.remove('hidden');
+
+      // Botões de aba no topo
+      ['aprovadas', 'em-teste', 'pre-clinica'].forEach(id => {
+        const btn = document.getElementById('btnTab-' + id);
+        if (id === faseId) {
+          btn.className = "text-xs font-bold px-4 py-2 rounded-xl transition bg-[#10653A] text-white shadow-sm";
+        } else {
+          btn.className = "text-xs font-bold px-4 py-2 rounded-xl transition bg-stone-100 text-[#1E3A2B] hover:bg-stone-200";
+        }
+      });
+
+      const cfg = configFases[faseId];
+      const listaDaFase = todasTerapias.filter(t => t.grupo === faseId);
+
+      // Agrupar itens estritamente por Categoria
+      const categoriasMap = {};
+      listaDaFase.forEach(item => {
+        if (!categoriasMap[item.categoria]) {
+          categoriasMap[item.categoria] = [];
+        }
+        categoriasMap[item.categoria].push(item);
+      });
+
+      // Cabeçalho da fase
+      document.getElementById('cabecalhoFase').innerHTML = `
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full ${cfg.badgeClasse}">
+              ${Object.keys(categoriasMap).length} Categorias • ${listaDaFase.length} Terapias Mapeadas
+            </span>
+            <h2 class="text-2xl md:text-4xl font-bold text-[#10653A] pt-2">${cfg.titulo}</h2>
+            <p class="text-sm md:text-base text-[#2C3E35]/80">${cfg.subtitulo}</p>
+          </div>
+        </div>
+      `;
+
+      // Renderizar Acordeões de Categoria
+      const container = document.getElementById('containerCategorias');
+      let html = '';
+
+      Object.keys(categoriasMap).forEach((nomeCategoria, idx) => {
+        const medicamentos = categoriasMap[nomeCategoria];
+        const subdivisoesUnicas = [...new Set(medicamentos.map(i => i.subcategoria))];
+
+        html += `
+          <div class="bg-white rounded-2xl shadow-sm border border-[#10653A]/15 overflow-hidden transition-all duration-200">
+            
+            <!-- Botão da Categoria para Expandir/Recolher -->
+            <button 
+              id="cat-btn-${idx}" 
+              onclick="alternarCategoria(${idx})" 
+              aria-expanded="false" 
+              class="w-full text-left p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-stone-50/70 transition cursor-pointer select-none">
+              
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-3">
+                  <span class="w-3.5 h-3.5 rounded-full shrink-0" style="background-color: ${cfg.corDestaque}"></span>
+                  <h3 class="text-lg md:text-xl font-bold text-[#10653A]">
+                    ${nomeCategoria}
+                  </h3>
+                  <span class="text-xs font-semibold bg-stone-100 text-stone-600 px-2.5 py-0.5 rounded-full">
+                    ${medicamentos.length} ${medicamentos.length === 1 ? 'item' : 'itens'}
+                  </span>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-1.5 pl-6 text-xs text-stone-500">
+                  <span class="font-bold text-[#BD2831]">Subdivisões:</span>
+                  ${subdivisoesUnicas.map(s => `<span>${s}</span>`).join(' • ')}
+                </div>
+              </div>
+
+              <!-- Indicador de clique -->
+              <div class="flex items-center gap-2 text-xs font-bold text-[#10653A] self-end md:self-center shrink-0">
+                <span>Clique para ver os medicamentos</span>
+                <span id="cat-icone-${idx}" class="icone-chevron inline-block transform text-sm">
+                  ▼
+                </span>
+              </div>
+            </button>
+
+            <!-- Conteúdo recolhível contendo cada janela individual -->
+            <div id="cat-conteudo-${idx}" class="conteudo-categoria">
+              <div class="conteudo-categoria-inner border-t border-stone-200 p-5 md:p-6 bg-stone-50/30">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  ${medicamentos.map(med => `
+                    <div tabindex="0" class="card-terapia group bg-white rounded-2xl p-5 border border-stone-200 hover:border-[#10653A] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+                      
+                      <!-- Topo da Janela do Medicamento -->
+                      <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                          <span class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#BD2831] bg-[#BD2831]/10 px-2 py-0.5 rounded">
+                            ${med.subcategoria}
+                          </span>
+                          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${cfg.badgeClasse}">
+                            ${med.status}
+                          </span>
+                        </div>
+
+                        <h4 class="text-base font-bold text-[#10653A] group-hover:text-[#BD2831] transition">
+                          ${med.nome}
+                        </h4>
+
+                        <div class="mt-2 flex items-center justify-between text-[11px] text-stone-400 group-hover:hidden">
+                          <span>Passe o mouse ou toque para detalhes</span>
+                          <span>▼</span>
+                        </div>
+                      </div>
+
+                      <!-- Detalhes do Medicamento -->
+                      <div class="detalhe-hover border-t border-stone-100 pt-3 space-y-2 text-xs text-[#1E3A2B]">
+                        <p class="leading-relaxed">
+                          <strong class="text-[#10653A]">Mecanismo de Ação:</strong> ${med.mecanismo}
+                        </p>
+                        <div class="flex flex-col gap-1 pt-1 text-[11px] text-stone-600">
+                          <span class="bg-stone-100 px-2 py-1 rounded"><strong>Entrega:</strong> ${med.entrega}</span>
+                          <span class="bg-stone-100 px-2 py-1 rounded"><strong>País(es):</strong> ${med.paises}</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  `).join('')}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function voltarMenuPrincipal() {
+      document.getElementById('telaDetalhes').classList.add('hidden');
+      document.getElementById('telaSelecao').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Inicia o carregamento da planilha assim que a página abre
+    window.addEventListener('DOMContentLoaded', carregarDadosPlanilha);
+  </script>
+</body>
+</html>
