@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Salto de Éxon - Associação Duchenne Brasil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cor-amarelo: #F3BA19;
+      --cor-vermelho: #BD2831;
+      --cor-verde: #10653A;
+      --cor-fundo: #F6F6EA;
+      --cor-texto: #1E3A2B;
+    }
+    body {
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .fonte-manuscrita {
+      font-family: 'Caveat', cursive;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Barra Superior Decorativa -->
+  <div class="h-2 w-full bg-gradient-to-r from-[#10653A] via-[#F3BA19] to-[#BD2831]"></div>
+
+  <!-- Cabeçalho -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-[#10653A]/10 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="LOGO.png" alt="Logo Duchenne Brasil" class="h-14 w-auto object-contain">
+      </a>
+      <nav class="flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-[#10653A]">
+        <a href="index.html" class="hover:text-[#BD2831] transition">← Voltar para a Página Inicial</a>
+        <a href="#simulador" class="bg-[#BD2831] text-white px-4 py-2 rounded-full shadow-sm">Simulador de Salto de Éxon</a>
+        <a href="#catalogo" class="hover:text-[#BD2831] transition">Lista de Medicamentos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-10 flex-1">
+
+    <!-- Título -->
+    <section class="text-center space-y-2">
+      <span class="bg-[#F3BA19]/25 text-[#10653A] px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
+        Ferramenta Interativa • Gene DMD
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold text-[#10653A]">
+        Simulador de <span class="text-[#BD2831]">Salto de Éxon</span>
+      </h1>
+      <p class="text-sm md:text-base text-[#2C3E35]/85 max-w-2xl mx-auto">
+        Selecione o tipo de mutação e os éxons afetados para verificar o encaixe e os medicamentos disponíveis.
+      </p>
+    </section>
+
+    <!-- Painel do Simulador -->
+    <section id="simulador" class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-[#10653A]/15 space-y-6">
+      <h2 class="text-xl font-bold text-[#10653A] border-b pb-3">1. Informe os Dados da Mutação</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Tipo de Mutação -->
+        <div>
+          <label class="block text-sm font-bold text-[#10653A] mb-2">Tipo de Mutação</label>
+          <select id="tipoMutacao" onchange="ajustarCampos()" class="w-full border-2 border-stone-200 rounded-xl p-3 font-medium text-sm outline-none focus:border-[#10653A] bg-[#F6F6EA]/50">
+            <option value="delecao">Deleção de Éxon(s)</option>
+            <option value="duplicacao">Duplicação de Éxon(s)</option>
+            <option value="nonsense">Mutação Nonsense (Parada Prematura)</option>
+            <option value="ponto">Outra Alteração / Pequena Mutação</option>
+          </select>
+        </div>
+
+        <!-- Éxon Inicial -->
+        <div>
+          <label id="labelExonInicio" class="block text-sm font-bold text-[#10653A] mb-2">Do Éxon (Inicial)</label>
+          <input type="number" id="exonInicio" min="1" max="79" value="48" class="w-full border-2 border-stone-200 rounded-xl p-3 font-bold text-base outline-none focus:border-[#10653A] bg-[#F6F6EA]/50">
+          <span class="text-xs text-stone-500">Entre 1 e 79</span>
+        </div>
+
+        <!-- Éxon Final -->
+        <div id="divExonFim">
+          <label class="block text-sm font-bold text-[#10653A] mb-2">Até o Éxon (Final)</label>
+          <input type="number" id="exonFim" min="1" max="79" value="50" class="w-full border-2 border-stone-200 rounded-xl p-3 font-bold text-base outline-none focus:border-[#10653A] bg-[#F6F6EA]/50">
+          <span class="text-xs text-stone-500">Se for apenas 1 éxon, repita o número inicial.</span>
+        </div>
+      </div>
+
+      <!-- Botões de Exemplo Rápido e Ação -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="font-bold text-stone-500">Testar exemplos:</span>
+          <button type="button" onclick="preencherExemplo('delecao', 48, 50)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 48–50 (Salta 51)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 52, 54)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 52–54 (Salta 55)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 45, 52)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 45–52 (Salta 53)</button>
+          <button type="button" onclick="preencherExemplo('delecao', 46, 47)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Del 46–47 (Salta 45)</button>
+          <button type="button" onclick="preencherExemplo('nonsense', 23, 23)" class="bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg font-semibold">Nonsense (Atalureno)</button>
+        </div>
+
+        <button type="button" onclick="analisarMutacao()" class="w-full md:w-auto bg-[#10653A] hover:bg-[#0b4929] text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md text-base">
+          Verificar Encaixe e Medicamentos
+        </button>
+      </div>
+    </section>
+
+    <!-- Área de Resultado Dinâmico -->
+    <div id="areaResultado" class="hidden space-y-6"></div>
+
+    <!-- Representação dos 79 Éxons no Formato Real dos Encaixes -->
+    <section class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15 space-y-5">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-[#10653A]">Representação dos Éxons do Gene DMD</h2>
+          <p class="text-xs md:text-sm text-stone-600">
+            Visualização no formato geométrico de encaixe de cada éxon (1 ao 79).
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4 text-xs font-bold">
+          <span class="inline-flex items-center gap-1.5"><span class="w-4 h-4 rounded bg-[#9B2C6B] inline-block"></span> Éxon Normal</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-4 h-4 rounded bg-[#BD2831] inline-block"></span> Éxon Afetado</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-4 h-4 rounded bg-[#F3BA19] inline-block"></span> Éxon para Saltar</span>
+        </div>
+      </div>
+
+      <!-- Quadro preto com os éxons desenhados no formato exato de encaixe -->
+      <div class="bg-black p-4 md:p-6 rounded-2xl border-2 border-[#BD2831]/40">
+        <h3 class="text-center text-[#D95338] font-bold tracking-wider uppercase text-sm md:text-lg mb-4 pb-2 border-b border-[#D95338]/40">
+          REPRESENTAÇÃO DOS ÉXONS DO GENE DMD
+        </h3>
+        <div id="gradeExons" class="flex flex-col gap-2.5 items-start max-w-4xl mx-auto overflow-x-auto py-2"></div>
+      </div>
+    </section>
+
+    <!-- Catálogo Exclusivo de Medicamentos -->
+    <section id="catalogo" class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-[#10653A]/15 space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#BD2831]">Terapias Específicas</span>
+          <h2 class="text-2xl font-bold text-[#10653A]">Medicamentos de Salto de Éxon e Leitura</h2>
+        </div>
+        <select id="filtroExon" onchange="renderizarCatalogo()" class="border-2 border-stone-200 rounded-xl p-2.5 text-sm font-semibold text-[#10653A] outline-none">
+          <option value="todos">Todos os Medicamentos</option>
+          <option value="44">Salto do Éxon 44</option>
+          <option value="45">Salto do Éxon 45</option>
+          <option value="50">Salto do Éxon 50</option>
+          <option value="51">Salto do Éxon 51</option>
+          <option value="53">Salto do Éxon 53</option>
+          <option value="nonsense">Mutação Nonsense (Atalureno)</option>
+        </select>
+      </div>
+
+      <div id="listaCatalogo" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- Aviso Médico -->
+    <div class="bg-[#F3BA19]/20 border-l-4 border-[#F3BA19] p-4 rounded-xl text-xs text-[#2C3E35]">
+      <strong>Aviso Importante:</strong> Este simulador tem caráter informativo. A indicação de qualquer medicamento exige avaliação médica especializada a partir do laudo genético.
+    </div>
+
+  </main>
+
+  <footer class="bg-[#10653A] text-white py-8 px-4 text-center text-xs">
+    <p class="font-bold text-sm mb-1">Associação Duchenne Brasil</p>
+    <p class="text-white/75">Acolher • Conectar • Informar • Transformar — “Juntos somos mais fortes.”</p>
+  </footer>
+
+  <script>
+    // Faseamento dos 79 éxons fiel à imagem de referência:
+    // 0 = Reta (|), 1 = Direita (>), 2 = Esquerda (<)
+    const fasesExons = {
+      // Linha 1 (1 a 11)
+      1:{e:0,d:1}, 2:{e:1,d:0}, 3:{e:0,d:0}, 4:{e:0,d:0}, 5:{e:0,d:0}, 6:{e:0,d:2}, 7:{e:2,d:1}, 8:{e:1,d:0}, 9:{e:0,d:0}, 10:{e:0,d:0}, 11:{e:0,d:2},
+      // Linha 2 (12 a 22)
+      12:{e:2,d:0}, 13:{e:0,d:0}, 14:{e:0,d:0}, 15:{e:0,d:0}, 16:{e:0,d:0}, 17:{e:0,d:2}, 18:{e:2,d:0}, 19:{e:0,d:1}, 20:{e:1,d:0}, 21:{e:0,d:1}, 22:{e:1,d:0},
+      // Linha 3 (23 a 33)
+      23:{e:0,d:0}, 24:{e:0,d:0}, 25:{e:0,d:0}, 26:{e:0,d:0}, 27:{e:0,d:0}, 28:{e:0,d:0}, 29:{e:0,d:0}, 30:{e:0,d:0}, 31:{e:0,d:0}, 32:{e:0,d:0}, 33:{e:0,d:0},
+      // Linha 4 (34 a 44)
+      34:{e:0,d:0}, 35:{e:0,d:0}, 36:{e:0,d:0}, 37:{e:0,d:0}, 38:{e:0,d:0}, 39:{e:0,d:0}, 40:{e:0,d:0}, 41:{e:0,d:0}, 42:{e:0,d:0}, 43:{e:0,d:2}, 44:{e:2,d:0},
+      // Linha 5 (45 a 55)
+      45:{e:0,d:2}, 46:{e:2,d:0}, 47:{e:0,d:0}, 48:{e:0,d:0}, 49:{e:0,d:0}, 50:{e:0,d:1}, 51:{e:1,d:0}, 52:{e:0,d:1}, 53:{e:1,d:0}, 54:{e:0,d:2}, 55:{e:2,d:0},
+      // Linha 6 (56 a 65)
+      56:{e:0,d:2}, 57:{e:2,d:0}, 58:{e:0,d:1}, 59:{e:1,d:0}, 60:{e:0,d:0}, 61:{e:0,d:1}, 62:{e:1,d:2}, 63:{e:2,d:1}, 64:{e:1,d:1}, 65:{e:1,d:2},
+      // Linha 7 (66 a 75)
+      66:{e:2,d:1}, 67:{e:1,d:0}, 68:{e:0,d:2}, 69:{e:2,d:0}, 70:{e:0,d:2}, 71:{e:2,d:2}, 72:{e:2,d:2}, 73:{e:2,d:2}, 74:{e:2,d:2}, 75:{e:2,d:0},
+      // Linha 8 (76 a 79)
+      76:{e:0,d:1}, 77:{e:1,d:1}, 78:{e:1,d:0}, 79:{e:0,d:0}
+    };
+
+    // Linhas idênticas à disposição da imagem de referência
+    const linhasExons = [
+      [1, 11],
+      [12, 22],
+      [23, 33],
+      [34, 44],
+      [45, 55],
+      [56, 65],
+      [66, 75],
+      [76, 79]
+    ];
+
+    // Medicamentos de Salto de Éxon + Atalureno para Nonsense
+    const medicamentosSaltoExon = [
+      // SALTO DO ÉXON 51
+      { exonAlvo: 51, sub: "Salto do Éxon 51", nome: "Eteplirsen (Exondys 51)", status: "Aprovado", entrega: "Infusão Intravenosa (IV) semanal", mecanismo: "Oligonucleotídeo morfolino (PMO) que induz o salto do éxon 51.", paises: "EUA, Israel" },
+      { exonAlvo: 51, sub: "Salto do Éxon 51", nome: "DYNE-251 (z-rostudirsen)", status: "Fase 3", entrega: "Infusão Intravenosa (IV) mensal", mecanismo: "Conjugado anticorpo-oligonucleotídeo (AOC) direcionado ao músculo para o salto do éxon 51.", paises: "EUA, Europa, Austrália" },
+      { exonAlvo: 51, sub: "Salto do Éxon 51", nome: "BMN 351", status: "Fase 2", entrega: "Infusão Intravenosa (IV)", mecanismo: "Oligonucleotídeo antisense (ASO) otimizado para o salto do éxon 51.", paises: "EUA, Europa, Japão" },
+      { exonAlvo: 51, sub: "Salto do Éxon 51", nome: "LE051", status: "Fase 1 Inicial", entrega: "Infusão Intravenosa (IV)", mecanismo: "Oligonucleotídeo antisense para o salto terapêutico do éxon 51.", paises: "China" },
+
+      // SALTO DO ÉXON 53
+      { exonAlvo: 53, sub: "Salto do Éxon 53", nome: "Golodirsen (Vyondys 53)", status: "Aprovado", entrega: "Infusão Intravenosa (IV) semanal", mecanismo: "PMO desenhado para induzir o salto do éxon 53.", paises: "EUA" },
+      { exonAlvo: 53, sub: "Salto do Éxon 53", nome: "Viltolarsen (Viltepso)", status: "Aprovado", entrega: "Infusão Intravenosa (IV) semanal", mecanismo: "Oligômero antisense específico para pular o éxon 53.", paises: "EUA, Japão" },
+      { exonAlvo: 53, sub: "Salto do Éxon 53", nome: "WVE-N531", status: "Fase 2", entrega: "Infusão Intravenosa (IV)", mecanismo: "Oligonucleotídeo antisense estereoespecífico para o salto do éxon 53.", paises: "Reino Unido, EUA, Europa" },
+
+      // SALTO DO ÉXON 45
+      { exonAlvo: 45, sub: "Salto do Éxon 45", nome: "Casimersen (Amondys 45)", status: "Aprovado", entrega: "Infusão Intravenosa (IV) semanal", mecanismo: "PMO que induz o salto seletivo do éxon 45.", paises: "EUA" },
+      { exonAlvo: 45, sub: "Salto do Éxon 45", nome: "ENTR-601-45", status: "Fase 1/2", entrega: "Infusão Intravenosa (IV)", mecanismo: "PMO conjugado a peptídeos para salto do éxon 45.", paises: "EUA, Reino Unido" },
+
+      // SALTO DO ÉXON 44
+      { exonAlvo: 44, sub: "Salto do Éxon 44", nome: "AOC 1044", status: "Fase 3", entrega: "Infusão Intravenosa (IV)", mecanismo: "Conjugado de anticorpo ligado a oligonucleotídeo antisense para o salto do éxon 44.", paises: "EUA, Europa" },
+      { exonAlvo: 44, sub: "Salto do Éxon 44", nome: "Brogidirsen (NS-089 / NCNP-02)", status: "Fase 2", entrega: "Infusão Intravenosa (IV) semanal", mecanismo: "Oligonucleotídeo antisense modificado para o salto do éxon 44.", paises: "Japão, EUA" },
+      { exonAlvo: 44, sub: "Salto do Éxon 44", nome: "ENTR-601-44", status: "Fase 1/2", entrega: "Infusão Intravenosa (IV)", mecanismo: "PMO conjugado a peptídeos para o salto do éxon 44.", paises: "EUA, Reino Unido" },
+
+      // SALTO DO ÉXON 50
+      { exonAlvo: 50, sub: "Salto do Éxon 50", nome: "NS-050 / NCNP-03 (Meteor50)", status: "Fase 1/2", entrega: "Infusão Intravenosa (IV) semanal", mecanismo: "Oligonucleotídeo morfolino (PMO) desenhado para o salto do éxon 50.", paises: "Japão, EUA" },
+      { exonAlvo: 50, sub: "Salto do Éxon 50", nome: "GEN6050X", status: "Fase 1", entrega: "Infusão Intravenosa (IV)", mecanismo: "Edição de base para alterar o sítio de splicing e forçar o salto do éxon 50.", paises: "China" },
+
+      // MUTAÇÃO NONSENSE (ATALURENO)
+      { exonAlvo: "nonsense", sub: "Mutação Nonsense (Códon de Parada Prematuro)", nome: "Atalureno (Translarna)", status: "Aprovado (Anvisa Brasil / Uso em mutações Nonsense)", entrega: "Via Oral diária (granulado para suspensão)", mecanismo: "Promove a leitura ribossomal (readthrough) do códon de parada prematuro (mutação nonsense) no mRNA, permitindo a produção da proteína distrofina completa.", paises: "Brasil, Reino Unido e diversos países" }
+    ];
+
+    /**
+     * Desenha um éxon em SVG com o formato exato de encaixe da imagem
+     * e: 0 = Reta (x=10), 1 = Recorte > (x=19), 2 = Ponta < (x=1)
+     * d: 0 = Reta (x=62), 1 = Ponta > (x=71), 2 = Recorte < (x=53)
+     */
+    function criarSvgExon(num, corHex = "#9B2C6B", corTexto = "#FFFFFF", escala = 1) {
+      const f = fasesExons[num];
+      const topLeft = 10, bottomRight = 62, midY = 18;
+      const rightMidX = f.d === 0 ? 62 : (f.d === 1 ? 71 : 53);
+      const leftMidX  = f.e === 0 ? 10 : (f.e === 1 ? 19 : 1);
+
+      const dPath = `M ${topLeft},2 L ${bottomRight},2 L ${rightMidX},${midY} L ${bottomRight},34 L ${topLeft},34 L ${leftMidX},${midY} Z`;
+      const largura = Math.round(74 * escala);
+      const altura = Math.round(36 * escala);
+
+      return `
+        <svg width="${largura}" height="${altura}" viewBox="0 0 74 36" class="inline-block select-none drop-shadow-sm">
+          <path d="${dPath}" fill="${corHex}" stroke="#E5B8D2" stroke-width="1.2" stroke-linejoin="round" />
+          <text x="36" y="23" text-anchor="middle" fill="${corTexto}" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14">${num}</text>
+        </svg>
+      `;
+    }
+
+    function renderizarGradeExons(afetados = [], saltados = []) {
+      const container = document.getElementById('gradeExons');
+      container.innerHTML = '';
+
+      linhasExons.forEach(([inicio, fim]) => {
+        const row = document.createElement('div');
+        row.className = "flex items-center gap-0.5";
+        for (let i = inicio; i <= fim; i++) {
+          let cor = "#9B2C6B"; // Magenta/Vinho igual à imagem
+          let texto = "#FFFFFF";
+          if (afetados.includes(i)) {
+            cor = "#BD2831"; // Vermelho (afetado)
+          } else if (saltados.includes(i)) {
+            cor = "#F3BA19"; // Amarelo (alvo de salto)
+            texto = "#111111";
+          }
+          const wrapper = document.createElement('div');
+          wrapper.className = "inline-flex items-center justify-center transition transform hover:scale-110";
+          wrapper.innerHTML = criarSvgExon(i, cor, texto, 1);
+          row.appendChild(wrapper);
+        }
+        container.appendChild(row);
+      });
+    }
+
+    function ajustarCampos() {
+      const tipo = document.getElementById('tipoMutacao').value;
+      const divFim = document.getElementById('divExonFim');
+      const labelInicio = document.getElementById('labelExonInicio');
+      if (tipo === 'nonsense' || tipo === 'ponto') {
+        divFim.classList.add('opacity-40', 'pointer-events-none');
+        labelInicio.textContent = "Éxon onde está a Mutação";
+        document.getElementById('exonFim').value = document.getElementById('exonInicio').value;
+      } else {
+        divFim.classList.remove('opacity-40', 'pointer-events-none');
+        labelInicio.textContent = "Do Éxon (Inicial)";
+      }
+    }
+
+    function preencherExemplo(tipo, ini, fim) {
+      document.getElementById('tipoMutacao').value = tipo;
+      document.getElementById('exonInicio').value = ini;
+      document.getElementById('exonFim').value = fim;
+      ajustarCampos();
+      analisarMutacao();
+    }
+
+    function analisarMutacao() {
+      const tipo = document.getElementById('tipoMutacao').value;
+      let ini = parseInt(document.getElementById('exonInicio').value);
+      let fim = parseInt(document.getElementById('exonFim').value);
+
+      if (isNaN(ini) || ini < 1 || ini > 79) {
+        alert("Informe um éxon válido entre 1 e 79.");
+        return;
+      }
+      if (tipo === 'nonsense' || tipo === 'ponto' || isNaN(fim)) fim = ini;
+      if (fim < ini) { const t = ini; ini = fim; fim = t; }
+      if (fim > 79) fim = 79;
+
+      const afetados = [];
+      for (let i = ini; i <= fim; i++) afetados.push(i);
+
+      const area = document.getElementById('areaResultado');
+      area.classList.remove('hidden');
+
+      let html = '';
+      let opcoesSalto = [];
+
+      // 1. DELEÇÃO
+      if (tipo === 'delecao') {
+        const exonAnt = ini - 1;
+        const exonPos = fim + 1;
+
+        if (exonAnt < 1 || exonPos > 79) {
+          html += `
+            <div class="bg-amber-50 border-2 border-[#F3BA19] rounded-3xl p-6">
+              <h3 class="text-xl font-bold text-amber-950">Deleção na extremidade do gene (Éxon 1 ou 79)</h3>
+              <p class="text-sm text-amber-900 mt-1">Não há dois éxons vizinhos para encaixar por salto de éxon.</p>
+            </div>`;
+        } else {
+          const jaEncaixa = (fasesExons[exonAnt].d === fasesExons[exonPos].e);
+
+          // Verifica salto do posterior ou anterior
+          if (exonPos + 1 <= 79 && fasesExons[exonAnt].d === fasesExons[exonPos + 1].e) {
+            opcoesSalto.push({ exon: exonPos, esq: exonAnt, dir: exonPos + 1 });
+          }
+          if (exonAnt - 1 >= 1 && fasesExons[exonAnt - 1].d === fasesExons[exonPos].e) {
+            opcoesSalto.push({ exon: exonAnt, esq: exonAnt - 1, dir: exonPos });
+          }
+
+          if (jaEncaixa) {
+            html += `
+              <div class="bg-emerald-50 border-2 border-[#10653A] rounded-3xl p-6 space-y-4">
+                <span class="bg-[#10653A] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Encaixe Mantido (Em Quadro)</span>
+                <h3 class="text-2xl font-bold text-[#10653A]">O Éxon ${exonAnt} já encaixa diretamente com o Éxon ${exonPos}.</h3>
+                <div class="flex items-center gap-1 bg-black/90 p-4 rounded-2xl w-fit">
+                  ${criarSvgExon(exonAnt, "#10653A", "#FFF", 1.15)}
+                  ${criarSvgExon(exonPos, "#10653A", "#FFF", 1.15)}
+                </div>
+                <p class="text-sm font-medium text-[#2C3E35]">Não é necessário salto de éxon.</p>
+              </div>`;
+          } else {
+            html += `
+              <div class="bg-white border-2 border-[#BD2831] rounded-3xl p-6 space-y-5 shadow-sm">
+                <div class="space-y-2">
+                  <span class="bg-[#BD2831] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Fora de Encaixe</span>
+                  <h3 class="text-2xl font-bold text-[#BD2831]">
+                    O Éxon ${exonAnt} não encaixa com o Éxon ${exonPos}.
+                  </h3>
+                  <div class="flex items-center gap-3 bg-black/90 p-3.5 rounded-2xl w-fit">
+                    ${criarSvgExon(exonAnt, "#9B2C6B", "#FFF", 1.1)}
+                    <span class="text-[#BD2831] font-extrabold text-lg">✕</span>
+                    ${criarSvgExon(exonPos, "#9B2C6B", "#FFF", 1.1)}
+                  </div>
+                </div>
+
+                ${opcoesSalto.length > 0 ? `
+                  <div class="bg-[#10653A]/10 border-l-4 border-[#10653A] p-5 rounded-2xl space-y-4">
+                    <p class="font-bold text-[#10653A] text-lg">✅ Passível de Salto de Éxon:</p>
+                    <div class="space-y-3">
+                      ${opcoesSalto.map(op => `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-xl border border-[#10653A]/20">
+                          <span class="font-bold text-[#1E3A2B] text-base">
+                            Saltando o <span class="text-[#BD2831] underline">Éxon ${op.exon}</span>, o <strong>Éxon ${op.esq}</strong> encaixa com o <strong>Éxon ${op.dir}</strong>.
+                          </span>
+                          <div class="flex items-center bg-black p-2 rounded-xl w-fit">
+                            ${criarSvgExon(op.esq, "#10653A", "#FFF", 1)}
+                            ${criarSvgExon(op.dir, "#10653A", "#FFF", 1)}
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : `
+                  <div class="bg-amber-50 border-l-4 border-[#F3BA19] p-4 rounded-xl">
+                    <p class="font-bold text-amber-950">⚠️ Não é passível de salto de um único éxon.</p>
+                  </div>
+                `}
+              </div>`;
+          }
+        }
+      }
+
+      // 2. DUPLICAÇÃO
+      else if (tipo === 'duplicacao') {
+        if (ini === fim) {
+          opcoesSalto.push({ exon: ini, esq: ini - 1, dir: ini + 1 });
+        }
+        html += `
+          <div class="bg-white border-2 border-[#10653A] rounded-3xl p-6 space-y-3 shadow-sm">
+            <span class="bg-[#F3BA19] text-zinc-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Duplicação</span>
+            <h3 class="text-xl font-bold text-[#10653A]">
+              ${ini === fim 
+                ? `✅ Passível de salto do Éxon ${ini} (remove a cópia duplicada).` 
+                : `Duplicação dos éxons ${ini} ao ${fim} (requer avaliação de salto múltiplo).`}
+            </h3>
+          </div>`;
+      }
+
+      // 3. MUTAÇÃO NONSENSE OU PONTO
+      else {
+        const f = fasesExons[ini];
+        const podeSaltarProprio = (f.e === f.d && ini > 1 && ini < 79);
+        if (podeSaltarProprio) {
+          opcoesSalto.push({ exon: ini, esq: ini - 1, dir: ini + 1 });
+        }
+
+        html += `
+          <div class="bg-white border-2 border-[#10653A] rounded-3xl p-6 space-y-4 shadow-sm">
+            <span class="bg-[#BD2831] text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+              ${tipo === 'nonsense' ? 'Mutação Nonsense (Parada Prematura)' : 'Pequena Mutação'} no Éxon ${ini}
+            </span>
+            <h3 class="text-xl font-bold text-[#10653A]">
+              ${podeSaltarProprio 
+                ? `✅ Passível de salto do próprio Éxon ${ini}: o Éxon ${ini-1} encaixa com o Éxon ${ini+1}.`
+                : `⚠️ O salto isolado do Éxon ${ini} não encaixa o Éxon ${ini-1} com o Éxon ${ini+1}.`}
+            </h3>
+          </div>`;
+      }
+
+      // 4. MEDICAMENTOS
+      const exonsAlvoNums = opcoesSalto.map(o => o.exon);
+      let cardsHtml = '';
+
+      if (tipo === 'nonsense') {
+        const medAtalureno = medicamentosSaltoExon.find(m => m.exonAlvo === 'nonsense');
+        if (medAtalureno) {
+          cardsHtml += `
+            <div class="mb-4">
+              <p class="text-sm font-bold text-[#10653A] mb-2">Medicamento específico para Mutação Nonsense:</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${criarCardMed(medAtalureno, true)}
+              </div>
+            </div>`;
+        }
+      }
+
+      if (exonsAlvoNums.length > 0) {
+        exonsAlvoNums.forEach(numExon => {
+          const medsDoExon = medicamentosSaltoExon.filter(m => m.exonAlvo === numExon);
+          if (medsDoExon.length > 0) {
+            cardsHtml += `
+              <div class="space-y-3 pt-2">
+                <p class="text-sm font-bold text-[#10653A]">Medicamentos aprovados ou em teste para o Salto do Éxon ${numExon}:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  ${medsDoExon.map(m => criarCardMed(m, true)).join('')}
+                </div>
+              </div>`;
+          } else {
+            cardsHtml += `
+              <div class="bg-amber-50 border-l-4 border-[#F3BA19] p-4 rounded-xl text-sm font-semibold text-amber-950">
+                Ainda não há terapia de salto de éxon em teste clínico para o <strong>Éxon ${numExon}</strong>, mas poderá surgir no futuro.
+              </div>`;
+          }
+        });
+      } else if (tipo !== 'nonsense') {
+        cardsHtml += `
+          <div class="bg-stone-100 p-4 rounded-xl text-sm text-stone-700 font-medium">
+            Nenhum medicamento de salto de éxon único aplicável para esta combinação.
+          </div>`;
+      }
+
+      html += `
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-[#10653A]/15 space-y-4">
+          <h3 class="text-xl font-bold text-[#10653A]">2. Medicamentos Indicados</h3>
+          ${cardsHtml}
+        </div>
+      `;
+
+      area.innerHTML = html;
+      renderizarGradeExons(afetados, exonsAlvoNums);
+      area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function criarCardMed(m, destaque) {
+      const isAprovado = m.status.toLowerCase().includes('aprovado');
+      const badgeCor = isAprovado ? 'bg-[#10653A] text-white' : 'bg-[#F3BA19]/30 text-[#1E3A2B]';
+      const bordaCor = destaque ? 'border-2 border-[#10653A]' : 'border border-stone-200';
+      return `
+        <div class="bg-[#F6F6EA]/60 rounded-2xl p-5 ${bordaCor} flex flex-col justify-between space-y-3">
+          <div class="space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#BD2831]">${m.sub}</span>
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${badgeCor}">${m.status}</span>
+            </div>
+            <h4 class="text-lg font-bold text-[#10653A]">${m.nome}</h4>
+            <p class="text-xs text-[#2C3E35]/90 leading-relaxed">${m.mecanismo}</p>
+          </div>
+          <div class="pt-2 border-t border-stone-200/80 flex flex-wrap justify-between gap-2 text-[11px] text-stone-600 font-medium">
+            <span><strong>Via:</strong> ${m.entrega}</span>
+            <span><strong>Regiões:</strong> ${m.paises}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderizarCatalogo() {
+      const filtro = document.getElementById('filtroExon').value;
+      const container = document.getElementById('listaCatalogo');
+      const filtrados = medicamentosSaltoExon.filter(m => {
+        if (filtro === 'todos') return true;
+        if (filtro === 'nonsense') return m.exonAlvo === 'nonsense';
+        return m.exonAlvo === parseInt(filtro);
+      });
+      container.innerHTML = filtrados.map(m => criarCardMed(m, false)).join('');
+    }
+
+    window.onload = () => {
+      renderizarGradeExons([], []);
+      renderizarCatalogo();
+    };
+  </script>
+</body>
+</html>
